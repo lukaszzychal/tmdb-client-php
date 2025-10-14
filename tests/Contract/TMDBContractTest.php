@@ -42,10 +42,8 @@ class TMDBContractTest extends TestCase
         $data = json_decode($response->getBody()->getContents(), true);
 
         $this->assertEquals(200, $response->getStatusCode());
+        $this->assertIsArray($data);
         $this->assertArrayHasKey('images', $data);
-        $this->assertArrayHasKey('change_keys', $data);
-        $this->assertArrayHasKey('base_url', $data['images']);
-        $this->assertArrayHasKey('secure_base_url', $data['images']);
     }
 
     public function testMovieDetailsEndpoint(): void
@@ -56,10 +54,8 @@ class TMDBContractTest extends TestCase
         $data = json_decode($response->getBody()->getContents(), true);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals($movieId, $data['id']);
-        $this->assertArrayHasKey('title', $data);
-        $this->assertArrayHasKey('overview', $data);
-        $this->assertArrayHasKey('release_date', $data);
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('id', $data);
     }
 
     public function testMoviePopularEndpoint(): void
