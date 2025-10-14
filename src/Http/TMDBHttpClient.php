@@ -19,6 +19,8 @@ use Psr\Log\NullLogger;
 
 /**
  * HTTP client for TMDB API using Guzzle.
+ *
+ * @author Łukasz Zychal <https://github.com/lukaszzychal>
  */
 class TMDBHttpClient implements HttpClientInterface
 {

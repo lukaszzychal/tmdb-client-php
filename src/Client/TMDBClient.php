@@ -10,6 +10,8 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Main TMDB API client.
+ *
+ * @author Łukasz Zychal <https://github.com/lukaszzychal>
  */
 class TMDBClient
 {

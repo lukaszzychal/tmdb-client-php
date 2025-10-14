@@ -8,6 +8,8 @@
 
 A comprehensive PHP client for The Movie Database (TMDB) API built with modern PHP practices and full test coverage.
 
+**Author:** [Łukasz Zychal](https://github.com/lukaszzychal)
+
 ## Features
 
 - 🎬 **Complete TMDB API Coverage** - Movies, TV Shows, People, Search, Configuration, Genres

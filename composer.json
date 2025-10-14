@@ -14,7 +14,9 @@
     "authors": [
         {
             "name": "Łukasz Zychal",
-            "email": "lukasz.zychal@example.com"
+            "email": "lukasz.zychal.dev@gmail.com",
+            "role": "Lead Developer",
+            "homepage": "https://github.com/lukaszzychal"
         }
     ],
     "require": {
