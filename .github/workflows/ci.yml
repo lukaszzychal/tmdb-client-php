@@ -102,7 +102,9 @@ jobs:
       run: |
         if [ -n "$TMDB_API_KEY" ] && [ "$TMDB_API_KEY" != "your-tmdb-api-key-here" ]; then
           echo "Running contract tests with API key..."
-          vendor/bin/phpunit --testsuite=Contract
+          echo "API key length: ${#TMDB_API_KEY} characters"
+          echo "API key starts with: ${TMDB_API_KEY:0:8}..."
+          vendor/bin/phpunit --testsuite=Contract --verbose
         else
           echo "TMDB_API_KEY not set or is placeholder, skipping contract tests"
           echo "Please add a valid TMDB_API_KEY secret to your GitHub repository"
