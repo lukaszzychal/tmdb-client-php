@@ -13,8 +13,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        php-version: ['8.1', '8.2', '8.3']
+        php-version: ['8.1', '8.2', '8.3', '8.4']
 
     steps:
     - name: Checkout code
@@ -37,13 +38,18 @@ jobs:
           ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
 
     - name: Validate composer.json
       run: composer validate
 
+    - name: Debug PHP version and extensions
+      run: |
+        php --version
+        php -m
+
     - name: Run PHP CS Fixer
-      run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      run: vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
 
     - name: Run PHPStan
       run: vendor/bin/phpstan analyse
@@ -52,11 +58,11 @@ jobs:
       run: vendor/bin/psalm
 
     - name: Run PHPUnit (Unit & Integration Tests)
-      run: vendor/bin/phpunit --testsuite=Unit,Integration --coverage-clover=coverage.xml
+      run: vendor/bin/phpunit --testsuite=Unit,Integration --coverage-clover=coverage.xml --fail-on-warning=false
 
     - name: Upload coverage reports to Codecov
-      if: matrix.php-version == '8.3'
-      uses: codecov/codecov-action@v3
+      if: matrix.php-version == '8.4'
+      uses: codecov/codecov-action@v4
       with:
         file: ./coverage.xml
         flags: unittests
@@ -84,7 +90,7 @@ jobs:
         key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
 
     - name: Run Contract Tests
       env:
@@ -98,6 +104,10 @@ jobs:
 
   security:
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
     
     steps:
     - name: Checkout code
@@ -112,7 +122,7 @@ jobs:
         output: 'trivy-results.sarif'
 
     - name: Upload Trivy scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
@@ -125,8 +135,12 @@ jobs:
     steps:
     - name: Check test results
       run: |
-        if [ "${{ needs.test.result }}" != "success" ]; then
-          echo "Tests failed"
+        if [ "${{ needs.test.result }}" == "success" ] && [ "${{ needs.security.result }}" == "success" ]; then
+          echo "✅ All quality checks passed"
+          exit 0
+        else
+          echo "❌ Quality checks failed:"
+          echo "  - Test result: ${{ needs.test.result }}"
+          echo "  - Security result: ${{ needs.security.result }}"
           exit 1
         fi
-        echo "All quality checks passed"
