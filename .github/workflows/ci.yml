@@ -58,7 +58,11 @@ jobs:
       run: vendor/bin/psalm
 
     - name: Run PHPUnit (Unit & Integration Tests)
-      run: vendor/bin/phpunit --testsuite=Unit,Integration --coverage-clover=coverage.xml --fail-on-warning=false
+      run: vendor/bin/phpunit --testsuite=Unit,Integration
+
+    - name: Run PHPUnit with Coverage (PHP 8.4 only)
+      if: matrix.php-version == '8.4'
+      run: vendor/bin/phpunit --testsuite=Unit,Integration --coverage-clover=coverage.xml
 
     - name: Upload coverage reports to Codecov
       if: matrix.php-version == '8.4'
