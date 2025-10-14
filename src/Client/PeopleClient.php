@@ -32,7 +32,7 @@ class PeopleClient
      */
     public function getPopular(array $options = []): ResponseInterface
     {
-        return $this->httpClient->get('/person/popular', ['query' => $options]);
+        return $this->httpClient->get('person/popular', ['query' => $options]);
     }
 
     /**

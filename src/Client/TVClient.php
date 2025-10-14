@@ -24,7 +24,7 @@ class TVClient
      */
     public function getDetails(int $tvId, array $options = []): ResponseInterface
     {
-        return $this->httpClient->get("/tv/{$tvId}", ['query' => $options]);
+        return $this->httpClient->get("tv/{$tvId}", ['query' => $options]);
     }
 
     /**
@@ -32,7 +32,7 @@ class TVClient
      */
     public function getPopular(array $options = []): ResponseInterface
     {
-        return $this->httpClient->get('/tv/popular', ['query' => $options]);
+        return $this->httpClient->get('tv/popular', ['query' => $options]);
     }
 
     /**
@@ -40,7 +40,7 @@ class TVClient
      */
     public function getAiringToday(array $options = []): ResponseInterface
     {
-        return $this->httpClient->get('/tv/airing_today', ['query' => $options]);
+        return $this->httpClient->get('tv/airing_today', ['query' => $options]);
     }
 
     /**
@@ -48,7 +48,7 @@ class TVClient
      */
     public function getOnTheAir(array $options = []): ResponseInterface
     {
-        return $this->httpClient->get('/tv/on_the_air', ['query' => $options]);
+        return $this->httpClient->get('tv/on_the_air', ['query' => $options]);
     }
 
     /**
@@ -56,7 +56,7 @@ class TVClient
      */
     public function getTopRated(array $options = []): ResponseInterface
     {
-        return $this->httpClient->get('/tv/top_rated', ['query' => $options]);
+        return $this->httpClient->get('tv/top_rated', ['query' => $options]);
     }
 
     /**
