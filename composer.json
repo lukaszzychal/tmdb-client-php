@@ -47,15 +47,31 @@
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
         "phpstan": "phpstan analyse",
-        "phpcs": "phpcs",
-        "phpcbf": "phpcbf",
+        "phpcs": "phpcs src/ tests/",
+        "phpcbf": "phpcbf src/ tests/",
+        "php-cs-fixer": "php-cs-fixer fix --dry-run --diff --allow-risky=yes",
+        "php-cs-fixer-fix": "php-cs-fixer fix --allow-risky=yes",
         "psalm": "psalm",
         "quality": [
-            "@phpcs",
+            "@php-cs-fixer",
             "@phpstan",
             "@psalm",
             "@test"
-        ]
+        ],
+        "quality-check": [
+            "@php-cs-fixer"
+        ],
+        "quality-full": [
+            "@phpstan",
+            "@psalm", 
+            "@test"
+        ],
+        "quality-core": [
+            "@php-cs-fixer",
+            "@phpstan",
+            "@psalm"
+        ],
+        "test-core": "vendor/bin/phpunit --testsuite=Unit,Integration"
     },
     "config": {
         "sort-packages": true,

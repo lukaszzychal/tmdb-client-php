@@ -5,28 +5,18 @@ return $config
     ->setRules([
         '@PSR12' => true,
         '@PSR1' => true,
-        '@Symfony' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'blank_line_after_opening_tag' => true,
         'blank_line_before_statement' => [
             'statements' => ['return', 'throw', 'try'],
         ],
         'cast_spaces' => true,
-        'class_attributes_separation' => [
-            'elements' => [
-                'method' => 'one',
-            ],
-        ],
         'concat_space' => [
             'spacing' => 'one',
         ],
         'declare_equal_normalize' => true,
         'function_typehint_space' => true,
-        'heredoc_to_nowdoc' => true,
-        'include' => true,
         'increment_style' => ['style' => 'post'],
         'is_null' => true,
-        'linebreak_after_opening_tag' => true,
         'lowercase_cast' => true,
         'magic_constant_casing' => true,
         'magic_method_casing' => true,
@@ -89,7 +79,6 @@ return $config
         'self_accessor' => true,
         'short_scalar_cast' => true,
         'single_blank_line_at_eof' => true,
-        'single_blank_line_before_namespace' => true,
         'single_class_element_per_statement' => true,
         'single_import_per_statement' => true,
         'single_line_after_imports' => true,
@@ -112,23 +101,6 @@ return $config
             ],
         ],
         'whitespace_after_comma_in_array' => true,
-    ])
-    ->setRiskyRules([
-        'array_push' => true,
-        'dir_constant' => true,
-        'ereg_to_preg' => true,
-        'function_to_constant' => true,
-        'is_null' => true,
-        'modernize_strpos' => true,
-        'no_alias_functions' => true,
-        'no_homoglyph_names' => true,
-        'non_printable_character' => true,
-        'php_unit_construct' => true,
-        'php_unit_dedicate_assert' => true,
-        'php_unit_strict' => true,
-        'psr_autoloading' => true,
-        'self_accessor' => true,
-        'set_type_to_cast' => true,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

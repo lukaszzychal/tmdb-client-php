@@ -8,7 +8,7 @@ use LukaszZychal\TMDB\Http\HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Client for TMDB People API endpoints
+ * Client for TMDB People API endpoints.
  */
 class PeopleClient
 {
@@ -20,7 +20,7 @@ class PeopleClient
     }
 
     /**
-     * Get person details
+     * Get person details.
      */
     public function getDetails(int $personId, array $options = []): ResponseInterface
     {
@@ -28,7 +28,7 @@ class PeopleClient
     }
 
     /**
-     * Get popular people
+     * Get popular people.
      */
     public function getPopular(array $options = []): ResponseInterface
     {
@@ -36,7 +36,7 @@ class PeopleClient
     }
 
     /**
-     * Get person movie credits
+     * Get person movie credits.
      */
     public function getMovieCredits(int $personId, array $options = []): ResponseInterface
     {
@@ -44,7 +44,7 @@ class PeopleClient
     }
 
     /**
-     * Get person TV credits
+     * Get person TV credits.
      */
     public function getTVCredits(int $personId, array $options = []): ResponseInterface
     {
@@ -52,7 +52,7 @@ class PeopleClient
     }
 
     /**
-     * Get person combined credits
+     * Get person combined credits.
      */
     public function getCombinedCredits(int $personId, array $options = []): ResponseInterface
     {
@@ -60,7 +60,7 @@ class PeopleClient
     }
 
     /**
-     * Get person images
+     * Get person images.
      */
     public function getImages(int $personId): ResponseInterface
     {
@@ -68,7 +68,7 @@ class PeopleClient
     }
 
     /**
-     * Get person tagged images
+     * Get person tagged images.
      */
     public function getTaggedImages(int $personId, array $options = []): ResponseInterface
     {
@@ -76,7 +76,7 @@ class PeopleClient
     }
 
     /**
-     * Get person external IDs
+     * Get person external IDs.
      */
     public function getExternalIds(int $personId): ResponseInterface
     {

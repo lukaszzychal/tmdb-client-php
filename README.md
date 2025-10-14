@@ -260,8 +260,11 @@ try {
 ### Running Tests
 
 ```bash
-# Run all tests
+# Run all tests (includes contract tests - needs real API key)
 composer test
+
+# Run core tests only (Unit + Integration - no API key needed)
+composer test-core
 
 # Run specific test suites
 vendor/bin/phpunit --testsuite=Unit
@@ -298,19 +301,37 @@ Contract tests verify the real TMDB API behavior. To run them:
 
 ## Code Quality
 
-This package maintains high code quality standards:
+This package maintains high code quality standards using multiple static analysis tools:
 
 ```bash
-# Run code style fixer
-vendor/bin/php-cs-fixer fix
+# Core quality check (recommended for daily use)
+composer quality-core    # Style + Type Safety + Advanced Analysis
 
-# Run static analysis
-vendor/bin/phpstan analyse
-vendor/bin/psalm
+# Quick style check only
+composer quality-check
 
-# Run all quality checks
+# Full quality check (includes contract tests - needs real API key)
 composer quality
+
+# Individual tools
+composer php-cs-fixer    # Code style check
+composer phpstan         # Static type analysis
+composer psalm          # Advanced type analysis
+
+# Auto-fix style issues
+composer php-cs-fixer-fix
+
+# Run core tests (Unit + Integration - no API key needed)
+composer test-core
 ```
+
+### Quality Tools Used:
+- **PHP CS Fixer**: Code style and formatting
+- **PHPStan**: Static type analysis (Level 8)
+- **Psalm**: Advanced type analysis and security detection
+- **PHPUnit**: Unit, Integration, and Contract testing
+
+For detailed information about all quality commands, see [Quality Commands Reference](docs/quality-commands.md).
 
 ## Requirements
 

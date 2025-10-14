@@ -8,7 +8,7 @@ use LukaszZychal\TMDB\Http\HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Client for TMDB Search API endpoints
+ * Client for TMDB Search API endpoints.
  */
 class SearchClient
 {
@@ -20,65 +20,72 @@ class SearchClient
     }
 
     /**
-     * Search for movies
+     * Search for movies.
      */
     public function movies(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/movie', ['query' => $options]);
     }
 
     /**
-     * Search for TV shows
+     * Search for TV shows.
      */
     public function tv(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/tv', ['query' => $options]);
     }
 
     /**
-     * Search for people
+     * Search for people.
      */
     public function people(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/person', ['query' => $options]);
     }
 
     /**
-     * Search for companies
+     * Search for companies.
      */
     public function companies(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/company', ['query' => $options]);
     }
 
     /**
-     * Search for collections
+     * Search for collections.
      */
     public function collections(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/collection', ['query' => $options]);
     }
 
     /**
-     * Search for keywords
+     * Search for keywords.
      */
     public function keywords(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/keyword', ['query' => $options]);
     }
 
     /**
-     * Multi search
+     * Multi search.
      */
     public function multi(string $query, array $options = []): ResponseInterface
     {
         $options['query'] = $query;
+
         return $this->httpClient->get('search/multi', ['query' => $options]);
     }
 }

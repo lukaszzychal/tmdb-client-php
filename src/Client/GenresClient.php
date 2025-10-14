@@ -8,7 +8,7 @@ use LukaszZychal\TMDB\Http\HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Client for TMDB Genres API endpoints
+ * Client for TMDB Genres API endpoints.
  */
 class GenresClient
 {
@@ -20,7 +20,7 @@ class GenresClient
     }
 
     /**
-     * Get movie genres
+     * Get movie genres.
      */
     public function getMovieList(array $options = []): ResponseInterface
     {
@@ -28,7 +28,7 @@ class GenresClient
     }
 
     /**
-     * Get TV show genres
+     * Get TV show genres.
      */
     public function getTVList(array $options = []): ResponseInterface
     {

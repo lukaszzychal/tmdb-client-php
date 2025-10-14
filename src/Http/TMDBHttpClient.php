@@ -9,7 +9,6 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\TooManyRedirectsException;
-use GuzzleHttp\Psr7\Response;
 use LukaszZychal\TMDB\Exception\AuthenticationException;
 use LukaszZychal\TMDB\Exception\NotFoundException;
 use LukaszZychal\TMDB\Exception\RateLimitException;
@@ -19,7 +18,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * HTTP client for TMDB API using Guzzle
+ * HTTP client for TMDB API using Guzzle.
  */
 class TMDBHttpClient implements HttpClientInterface
 {
@@ -75,7 +74,7 @@ class TMDBHttpClient implements HttpClientInterface
     public function request(string $method, string $uri, array $options = []): ResponseInterface
     {
         $options = $this->prepareRequestOptions($options);
-        
+
         $this->logger->info('Making TMDB API request', [
             'method' => $method,
             'uri' => $uri,
@@ -84,7 +83,7 @@ class TMDBHttpClient implements HttpClientInterface
 
         try {
             $response = $this->client->request($method, $uri, $options);
-            
+
             $this->logger->info('TMDB API request successful', [
                 'method' => $method,
                 'uri' => $uri,
@@ -98,15 +97,17 @@ class TMDBHttpClient implements HttpClientInterface
             $this->handleServerException($e);
         } catch (TooManyRedirectsException $e) {
             $this->logger->error('Too many redirects', ['uri' => $uri]);
+
             throw new TMDBException('Too many redirects', 0, $e);
         } catch (GuzzleException $e) {
             $this->logger->error('Guzzle exception', [
                 'message' => $e->getMessage(),
                 'uri' => $uri,
             ]);
+
             throw new TMDBException('HTTP request failed: ' . $e->getMessage(), 0, $e);
         }
-        
+
         // This line should never be reached, but PHPStan needs it
         throw new TMDBException('Unexpected error in HTTP request');
     }
@@ -114,6 +115,7 @@ class TMDBHttpClient implements HttpClientInterface
     private function prepareRequestOptions(array $options): array
     {
         // Add API key to query parameters
+        /** @var array<string, mixed> $query */
         $query = $options['query'] ?? [];
         $query['api_key'] = $this->apiKey;
         $options['query'] = $query;
@@ -124,8 +126,8 @@ class TMDBHttpClient implements HttpClientInterface
     private function handleClientException(ClientException $e): void
     {
         $response = $e->getResponse();
-        $statusCode = $response ? $response->getStatusCode() : 0;
-        $responseBody = $response ? $response->getBody()->getContents() : '';
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody()->getContents();
 
         $this->logger->error('TMDB API client error', [
             'status_code' => $statusCode,
@@ -151,8 +153,8 @@ class TMDBHttpClient implements HttpClientInterface
     private function handleServerException(ServerException $e): void
     {
         $response = $e->getResponse();
-        $statusCode = $response ? $response->getStatusCode() : 0;
-        $responseBody = $response ? $response->getBody()->getContents() : '';
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody()->getContents();
 
         $this->logger->error('TMDB API server error', [
             'status_code' => $statusCode,
@@ -169,12 +171,12 @@ class TMDBHttpClient implements HttpClientInterface
     private function sanitizeOptions(array $options): array
     {
         $sanitized = $options;
-        
+
         // Remove sensitive data from logging
         if (isset($sanitized['query']['api_key'])) {
             $sanitized['query']['api_key'] = '***';
         }
-        
+
         return $sanitized;
     }
 

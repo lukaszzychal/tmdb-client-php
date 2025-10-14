@@ -8,7 +8,7 @@ use LukaszZychal\TMDB\Http\HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Client for TMDB Configuration API endpoints
+ * Client for TMDB Configuration API endpoints.
  */
 class ConfigurationClient
 {
@@ -20,7 +20,7 @@ class ConfigurationClient
     }
 
     /**
-     * Get API configuration
+     * Get API configuration.
      */
     public function getDetails(): ResponseInterface
     {
@@ -28,7 +28,7 @@ class ConfigurationClient
     }
 
     /**
-     * Get countries
+     * Get countries.
      */
     public function getCountries(): ResponseInterface
     {
@@ -36,7 +36,7 @@ class ConfigurationClient
     }
 
     /**
-     * Get jobs
+     * Get jobs.
      */
     public function getJobs(): ResponseInterface
     {
@@ -44,7 +44,7 @@ class ConfigurationClient
     }
 
     /**
-     * Get languages
+     * Get languages.
      */
     public function getLanguages(): ResponseInterface
     {
@@ -52,7 +52,7 @@ class ConfigurationClient
     }
 
     /**
-     * Get primary translations
+     * Get primary translations.
      */
     public function getPrimaryTranslations(): ResponseInterface
     {
@@ -60,7 +60,7 @@ class ConfigurationClient
     }
 
     /**
-     * Get timezones
+     * Get timezones.
      */
     public function getTimezones(): ResponseInterface
     {

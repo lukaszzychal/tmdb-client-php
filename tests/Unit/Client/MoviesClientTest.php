@@ -31,7 +31,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}", ['query' => $options])
+            ->with("movie/{$movieId}", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getDetails($movieId, $options);
@@ -47,7 +47,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with('/movie/popular', ['query' => $options])
+            ->with('movie/popular', ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getPopular($options);
@@ -63,7 +63,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with('/movie/now_playing', ['query' => $options])
+            ->with('movie/now_playing', ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getNowPlaying($options);
@@ -79,7 +79,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with('/movie/upcoming', ['query' => $options])
+            ->with('movie/upcoming', ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getUpcoming($options);
@@ -95,7 +95,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with('/movie/top_rated', ['query' => $options])
+            ->with('movie/top_rated', ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getTopRated($options);
@@ -112,7 +112,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}/credits", ['query' => $options])
+            ->with("movie/{$movieId}/credits", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getCredits($movieId, $options);
@@ -129,7 +129,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}/reviews", ['query' => $options])
+            ->with("movie/{$movieId}/reviews", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getReviews($movieId, $options);
@@ -146,7 +146,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}/videos", ['query' => $options])
+            ->with("movie/{$movieId}/videos", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getVideos($movieId, $options);
@@ -163,7 +163,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}/images", ['query' => $options])
+            ->with("movie/{$movieId}/images", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getImages($movieId, $options);
@@ -180,7 +180,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}/similar", ['query' => $options])
+            ->with("movie/{$movieId}/similar", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getSimilar($movieId, $options);
@@ -197,7 +197,7 @@ class MoviesClientTest extends TestCase
         $this->httpClient
             ->expects($this->once())
             ->method('get')
-            ->with("/movie/{$movieId}/recommendations", ['query' => $options])
+            ->with("movie/{$movieId}/recommendations", ['query' => $options])
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getRecommendations($movieId, $options);

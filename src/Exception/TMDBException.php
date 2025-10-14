@@ -7,7 +7,7 @@ namespace LukaszZychal\TMDB\Exception;
 use Exception;
 
 /**
- * Base exception for TMDB client
+ * Base exception for TMDB client.
  */
 class TMDBException extends Exception
 {

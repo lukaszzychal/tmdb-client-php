@@ -7,12 +7,12 @@ namespace LukaszZychal\TMDB\Http;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Interface for HTTP client operations
+ * Interface for HTTP client operations.
  */
 interface HttpClientInterface
 {
     /**
-     * Make a GET request
+     * Make a GET request.
      *
      * @param string $uri
      * @param array $options
@@ -21,7 +21,7 @@ interface HttpClientInterface
     public function get(string $uri, array $options = []): ResponseInterface;
 
     /**
-     * Make a POST request
+     * Make a POST request.
      *
      * @param string $uri
      * @param array $options
@@ -30,7 +30,7 @@ interface HttpClientInterface
     public function post(string $uri, array $options = []): ResponseInterface;
 
     /**
-     * Make a PUT request
+     * Make a PUT request.
      *
      * @param string $uri
      * @param array $options
@@ -39,7 +39,7 @@ interface HttpClientInterface
     public function put(string $uri, array $options = []): ResponseInterface;
 
     /**
-     * Make a DELETE request
+     * Make a DELETE request.
      *
      * @param string $uri
      * @param array $options
@@ -48,7 +48,7 @@ interface HttpClientInterface
     public function delete(string $uri, array $options = []): ResponseInterface;
 
     /**
-     * Make a request with custom method
+     * Make a request with custom method.
      *
      * @param string $method
      * @param string $uri

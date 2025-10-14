@@ -6,11 +6,10 @@ namespace LukaszZychal\TMDB\Client;
 
 use LukaszZychal\TMDB\Http\HttpClientInterface;
 use LukaszZychal\TMDB\Http\TMDBHttpClient;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Main TMDB API client
+ * Main TMDB API client.
  */
 class TMDBClient
 {
@@ -25,7 +24,7 @@ class TMDBClient
     }
 
     /**
-     * Get movies endpoints
+     * Get movies endpoints.
      */
     public function movies(): MoviesClient
     {
@@ -33,7 +32,7 @@ class TMDBClient
     }
 
     /**
-     * Get TV shows endpoints
+     * Get TV shows endpoints.
      */
     public function tv(): TVClient
     {
@@ -41,7 +40,7 @@ class TMDBClient
     }
 
     /**
-     * Get people endpoints
+     * Get people endpoints.
      */
     public function people(): PeopleClient
     {
@@ -49,7 +48,7 @@ class TMDBClient
     }
 
     /**
-     * Get search endpoints
+     * Get search endpoints.
      */
     public function search(): SearchClient
     {
@@ -57,7 +56,7 @@ class TMDBClient
     }
 
     /**
-     * Get configuration endpoints
+     * Get configuration endpoints.
      */
     public function configuration(): ConfigurationClient
     {
@@ -65,7 +64,7 @@ class TMDBClient
     }
 
     /**
-     * Get genres endpoints
+     * Get genres endpoints.
      */
     public function genres(): GenresClient
     {
@@ -73,7 +72,7 @@ class TMDBClient
     }
 
     /**
-     * Get the underlying HTTP client
+     * Get the underlying HTTP client.
      */
     public function getHttpClient(): HttpClientInterface
     {

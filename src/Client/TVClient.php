@@ -8,7 +8,7 @@ use LukaszZychal\TMDB\Http\HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Client for TMDB TV Shows API endpoints
+ * Client for TMDB TV Shows API endpoints.
  */
 class TVClient
 {
@@ -20,7 +20,7 @@ class TVClient
     }
 
     /**
-     * Get TV show details
+     * Get TV show details.
      */
     public function getDetails(int $tvId, array $options = []): ResponseInterface
     {
@@ -28,7 +28,7 @@ class TVClient
     }
 
     /**
-     * Get popular TV shows
+     * Get popular TV shows.
      */
     public function getPopular(array $options = []): ResponseInterface
     {
@@ -36,7 +36,7 @@ class TVClient
     }
 
     /**
-     * Get TV shows airing today
+     * Get TV shows airing today.
      */
     public function getAiringToday(array $options = []): ResponseInterface
     {
@@ -44,7 +44,7 @@ class TVClient
     }
 
     /**
-     * Get TV shows currently on the air
+     * Get TV shows currently on the air.
      */
     public function getOnTheAir(array $options = []): ResponseInterface
     {
@@ -52,7 +52,7 @@ class TVClient
     }
 
     /**
-     * Get top rated TV shows
+     * Get top rated TV shows.
      */
     public function getTopRated(array $options = []): ResponseInterface
     {
@@ -60,7 +60,7 @@ class TVClient
     }
 
     /**
-     * Get TV show credits
+     * Get TV show credits.
      */
     public function getCredits(int $tvId, array $options = []): ResponseInterface
     {
@@ -68,7 +68,7 @@ class TVClient
     }
 
     /**
-     * Get TV show reviews
+     * Get TV show reviews.
      */
     public function getReviews(int $tvId, array $options = []): ResponseInterface
     {
@@ -76,7 +76,7 @@ class TVClient
     }
 
     /**
-     * Get TV show videos
+     * Get TV show videos.
      */
     public function getVideos(int $tvId, array $options = []): ResponseInterface
     {
@@ -84,7 +84,7 @@ class TVClient
     }
 
     /**
-     * Get TV show images
+     * Get TV show images.
      */
     public function getImages(int $tvId, array $options = []): ResponseInterface
     {
@@ -92,7 +92,7 @@ class TVClient
     }
 
     /**
-     * Get similar TV shows
+     * Get similar TV shows.
      */
     public function getSimilar(int $tvId, array $options = []): ResponseInterface
     {
@@ -100,7 +100,7 @@ class TVClient
     }
 
     /**
-     * Get recommended TV shows
+     * Get recommended TV shows.
      */
     public function getRecommendations(int $tvId, array $options = []): ResponseInterface
     {
@@ -108,7 +108,7 @@ class TVClient
     }
 
     /**
-     * Get TV show season details
+     * Get TV show season details.
      */
     public function getSeasonDetails(int $tvId, int $seasonNumber, array $options = []): ResponseInterface
     {
@@ -116,7 +116,7 @@ class TVClient
     }
 
     /**
-     * Get TV show episode details
+     * Get TV show episode details.
      */
     public function getEpisodeDetails(int $tvId, int $seasonNumber, int $episodeNumber, array $options = []): ResponseInterface
     {

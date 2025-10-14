@@ -8,7 +8,7 @@ use LukaszZychal\TMDB\Http\HttpClientInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Client for TMDB Movies API endpoints
+ * Client for TMDB Movies API endpoints.
  */
 class MoviesClient
 {
@@ -20,7 +20,7 @@ class MoviesClient
     }
 
     /**
-     * Get movie details
+     * Get movie details.
      */
     public function getDetails(int $movieId, array $options = []): ResponseInterface
     {
@@ -28,7 +28,7 @@ class MoviesClient
     }
 
     /**
-     * Get popular movies
+     * Get popular movies.
      */
     public function getPopular(array $options = []): ResponseInterface
     {
@@ -36,7 +36,7 @@ class MoviesClient
     }
 
     /**
-     * Get now playing movies
+     * Get now playing movies.
      */
     public function getNowPlaying(array $options = []): ResponseInterface
     {
@@ -44,7 +44,7 @@ class MoviesClient
     }
 
     /**
-     * Get upcoming movies
+     * Get upcoming movies.
      */
     public function getUpcoming(array $options = []): ResponseInterface
     {
@@ -52,7 +52,7 @@ class MoviesClient
     }
 
     /**
-     * Get top rated movies
+     * Get top rated movies.
      */
     public function getTopRated(array $options = []): ResponseInterface
     {
@@ -60,7 +60,7 @@ class MoviesClient
     }
 
     /**
-     * Get movie credits
+     * Get movie credits.
      */
     public function getCredits(int $movieId, array $options = []): ResponseInterface
     {
@@ -68,7 +68,7 @@ class MoviesClient
     }
 
     /**
-     * Get movie reviews
+     * Get movie reviews.
      */
     public function getReviews(int $movieId, array $options = []): ResponseInterface
     {
@@ -76,7 +76,7 @@ class MoviesClient
     }
 
     /**
-     * Get movie videos
+     * Get movie videos.
      */
     public function getVideos(int $movieId, array $options = []): ResponseInterface
     {
@@ -84,7 +84,7 @@ class MoviesClient
     }
 
     /**
-     * Get movie images
+     * Get movie images.
      */
     public function getImages(int $movieId, array $options = []): ResponseInterface
     {
@@ -92,7 +92,7 @@ class MoviesClient
     }
 
     /**
-     * Get similar movies
+     * Get similar movies.
      */
     public function getSimilar(int $movieId, array $options = []): ResponseInterface
     {
@@ -100,7 +100,7 @@ class MoviesClient
     }
 
     /**
-     * Get recommended movies
+     * Get recommended movies.
      */
     public function getRecommendations(int $movieId, array $options = []): ResponseInterface
     {

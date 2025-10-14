@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace LukaszZychal\TMDB\Utils;
 
 /**
- * Simple .env file loader utility
- * 
+ * Simple .env file loader utility.
+ *
  * This is a basic implementation for loading environment variables from .env files.
  * For production applications, consider using a dedicated package like vlucas/phpdotenv.
  */
 class EnvLoader
 {
     /**
-     * Load environment variables from .env file
+     * Load environment variables from .env file.
      *
      * @param string $filePath Path to the .env file
      * @return bool True if file was loaded successfully, false otherwise
@@ -25,45 +25,47 @@ class EnvLoader
         }
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-        
+
         if ($lines === false) {
             return false;
         }
-        
+
         foreach ($lines as $line) {
             $line = trim($line);
-            
+
             // Skip empty lines and comments
             if (empty($line) || strpos($line, '#') === 0) {
                 continue;
             }
-            
+
             // Parse key=value pairs
             if (strpos($line, '=') !== false) {
-                list($name, $value) = explode('=', $line, 2);
-                $name = trim($name);
-                $value = trim($value);
-                
-                // Remove quotes if present
-                if (($value[0] ?? '') === '"' && ($value[-1] ?? '') === '"') {
-                    $value = substr($value, 1, -1);
-                } elseif (($value[0] ?? '') === "'" && ($value[-1] ?? '') === "'") {
-                    $value = substr($value, 1, -1);
-                }
-                
-                // Set environment variable if not already set
-                if (!array_key_exists($name, $_ENV) && getenv($name) === false) {
-                    $_ENV[$name] = $value;
-                    putenv("$name=$value");
+                $parts = explode('=', $line, 2);
+                if (count($parts) === 2) {
+                    $name = trim($parts[0]);
+                    $value = trim($parts[1]);
+
+                    // Remove quotes if present
+                    if (($value[0] ?? '') === '"' && ($value[-1] ?? '') === '"') {
+                        $value = substr($value, 1, -1);
+                    } elseif (($value[0] ?? '') === "'" && ($value[-1] ?? '') === "'") {
+                        $value = substr($value, 1, -1);
+                    }
+
+                    // Set environment variable if not already set
+                    if (!array_key_exists($name, $_ENV) && getenv($name) === false) {
+                        $_ENV[$name] = $value;
+                        putenv("$name=$value");
+                    }
                 }
             }
         }
-        
+
         return true;
     }
 
     /**
-     * Get environment variable with fallback
+     * Get environment variable with fallback.
      *
      * @param string $key Environment variable key
      * @param mixed $default Default value if key is not found
@@ -75,7 +77,7 @@ class EnvLoader
     }
 
     /**
-     * Check if environment variable exists
+     * Check if environment variable exists.
      *
      * @param string $key Environment variable key
      * @return bool True if variable exists, false otherwise
