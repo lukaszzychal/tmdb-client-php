@@ -24,7 +24,7 @@ class PeopleClient
      */
     public function getDetails(int $personId, array $options = []): ResponseInterface
     {
-        return $this->httpClient->get("/person/{$personId}", ['query' => $options]);
+        return $this->httpClient->get("person/{$personId}", ['query' => $options]);
     }
 
     /**

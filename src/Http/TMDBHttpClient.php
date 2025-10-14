@@ -80,6 +80,8 @@ class TMDBHttpClient implements HttpClientInterface
         $this->logger->info('Making TMDB API request', [
             'method' => $method,
             'uri' => $uri,
+            'base_uri' => self::BASE_URI,
+            'full_url' => self::BASE_URI . $uri,
             'options' => $this->sanitizeOptions($options),
         ]);
 

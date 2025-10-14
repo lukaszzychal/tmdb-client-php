@@ -209,11 +209,9 @@ class TMDBContractTest extends TestCase
     public function testNotFoundResource(): void
     {
         // Test with a very high movie ID that shouldn't exist
-        $response = $this->client->movies()->getDetails(999999999);
-        
-        // TMDB might return 404 or still return a response with empty data
-        // Both are valid behaviors, so we just check the response is valid
-        $this->assertContains($response->getStatusCode(), [200, 404]);
+        // Our HTTP client should throw a NotFoundException for 404 responses
+        $this->expectException(\LukaszZychal\TMDB\Exception\NotFoundException::class);
+        $this->client->movies()->getDetails(999999999);
     }
 
     /**
