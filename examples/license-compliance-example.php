@@ -7,7 +7,7 @@ use LukaszZychal\TMDB\Utils\EnvLoader;
 use LukaszZychal\TMDB\Utils\LicenseCompliance;
 
 // Load environment variables
-EnvLoader::load();
+EnvLoader::load(__DIR__ . '/../.env');
 
 // Create client
 $client = new TMDBClient($_ENV['TMDB_API_KEY']);
@@ -97,7 +97,8 @@ echo "5. Complete HTML Page Example:\n";
     <?php
     try {
         // Get popular movies
-        $movies = $client->movies()->getPopular();
+        $moviesResponse = $client->movies()->getPopular();
+        $movies = json_decode($moviesResponse->getBody()->getContents(), true);
 
         foreach (array_slice($movies['results'], 0, 3) as $movie) {
             echo "<div class='movie'>";
