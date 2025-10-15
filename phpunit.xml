@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+PHPUnit Configuration for TMDB Client PHP
+
+This configuration provides comprehensive testing setup with:
+- Multiple test suites (Unit, Integration, Contract)
+- Proper environment configuration
+- Coverage reporting setup
+- Performance optimizations
+- CI/CD compatibility
+
+@author Łukasz Zychal <lukasz.zychal.dev@gmail.com>
+@see https://phpunit.readthedocs.io/en/10.0/configuration.html
+-->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          bootstrap="vendor/autoload.php"
@@ -9,7 +22,10 @@
          beStrictAboutCoverageMetadata="false"
          beStrictAboutOutputDuringTests="false"
          failOnRisky="false"
-         failOnWarning="false">
+         failOnWarning="false"
+         stopOnFailure="false">
+    
+    <!-- Test suites configuration -->
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
@@ -20,17 +36,41 @@
         <testsuite name="Contract">
             <directory>tests/Contract</directory>
         </testsuite>
+        <testsuite name="All">
+            <directory>tests</directory>
+        </testsuite>
     </testsuites>
 
+    <!-- Environment variables for testing -->
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="TMDB_API_KEY" value="test-api-key"/>
+        <env name="TMDB_BASE_URI" value="https://api.themoviedb.org/3/"/>
+        <env name="TMDB_TIMEOUT" value="30"/>
+        <env name="TMDB_CONNECT_TIMEOUT" value="10"/>
+        <ini name="memory_limit" value="512M"/>
+        <ini name="max_execution_time" value="300"/>
+        <ini name="error_reporting" value="E_ALL"/>
+        <ini name="display_errors" value="1"/>
+        <ini name="log_errors" value="1"/>
+        <ini name="error_log" value="phpunit-errors.log"/>
+    </php>
+
+    <!-- Source code for coverage analysis -->
     <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>tests</directory>
+            <directory>docs</directory>
+            <directory>scripts</directory>
+            <directory>.github</directory>
+            <directory>coverage</directory>
+            <directory>build</directory>
+            <directory>dist</directory>
+            <file>src/Utils/EnvLoader.php</file> <!-- Exclude utility classes from coverage -->
+        </exclude>
     </source>
-
-
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="TMDB_API_KEY" value="test-api-key"/>
-    </php>
 </phpunit>

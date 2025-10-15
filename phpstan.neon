@@ -1,11 +1,98 @@
+# PHPStan Configuration for TMDB Client PHP
+# 
+# This configuration provides comprehensive static analysis with:
+# - Maximum level analysis (level 8)
+# - Proper error handling and exclusions
+# - Performance optimizations
+# - Modern PHP features support
+#
+# @author Łukasz Zychal <lukasz.zychal.dev@gmail.com>
+# @see https://phpstan.org/config-reference
+
 parameters:
+    # Analysis level (0-10, where 10 is most strict)
     level: 8
+    
+    # Paths to analyze
     paths:
         - src
-    ignoreErrors:
-        - '#Call to an undefined method.*#'
+        - examples
+    
+    # Exclude paths from analysis
     excludePaths:
         - tests
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
+        - vendor
+        - docs
+        - scripts
+        - .github
+        - coverage
+        - build
+        - dist
+    
+    # Error handling and ignore patterns
+    ignoreErrors:
+        # Suppress specific error patterns if needed
+        - '#Call to an undefined method.*#'
+        # Ignore missing type hints (instead of deprecated options)
+        - identifier: missingType.iterableValue
+        - identifier: missingType.generics
+    
+    # Performance and compatibility settings
     reportUnmatchedIgnoredErrors: false
+    
+    # Parallel processing for better performance
+    parallel:
+        processTimeout: 300.0
+        maximumNumberOfProcesses: 4
+    
+    # Memory and performance optimizations
+    tmpDir: .phpstan/tmp
+    resultCachePath: .phpstan/cache/resultCache.php
+    
+    # Type inference improvements
+    inferPrivatePropertyTypeFromConstructor: true
+    checkAlwaysTrueCheckTypeFunctionCall: true
+    checkAlwaysTrueInstanceof: true
+    checkAlwaysTrueStrictComparison: true
+    
+    # Modern PHP features
+    checkExplicitMixedMissingReturn: true
+    checkMissingVarTagTypehint: true
+    checkTooWideReturnTypesInProtectedAndPublicMethods: true
+    
+    # Custom rules (if needed)
+    # customRules:
+    #     - PHPStan\Rules\Methods\CallToMethodStamentWithoutSideEffectsRule
+    
+    # Baseline file for ignoring existing errors
+    # baseline: phpstan-baseline.neon
+    
+    # Custom stub files for better type inference
+    # stubFiles:
+    #     - stubs/custom.stub
+    
+    # Universal object crates (for better analysis of generic objects)
+    universalObjectCratesClasses:
+        - stdClass
+        - SimpleXMLElement
+        - DOMDocument
+        - DOMElement
+        - DOMNodeList
+        - DOMNode
+    
+    # File extensions to analyze
+    fileExtensions:
+        - php
+        - phtml
+    
+    # Treat PHP internal functions as pure (no side effects)
+    treatPhpDocTypesAsCertain: true
+    
+    # PHP version for analysis
+    phpVersion: 80100  # PHP 8.1
+    
+    # Better error messages
+    errorFormat: table
+    
+    # Memory limit
+    memoryLimitFile: 1G

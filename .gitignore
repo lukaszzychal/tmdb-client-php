@@ -36,6 +36,12 @@ temp/
 cache/
 .cache/
 
+# Static Analysis Tools Cache
+.php-cs-fixer.cache
+.phpstan/
+.psalm/
+.phpunit.cache/
+
 # Build artifacts
 build/
 dist/

@@ -1,4 +1,16 @@
 <?xml version="1.0"?>
+<!--
+Psalm Configuration for TMDB Client PHP
+
+This configuration provides comprehensive static analysis with:
+- High error level for strict analysis
+- Performance optimizations
+- Modern PHP features support
+- Proper error handling and exclusions
+
+@author Łukasz Zychal <lukasz.zychal.dev@gmail.com>
+@see https://psalm.dev/docs/configuration/
+-->
 <psalm
     errorLevel="2"
     resolveFromConfigFile="true"
@@ -6,19 +18,76 @@
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
+    <!-- Project files to analyze -->
     <projectFiles>
         <directory name="src" />
+        <directory name="examples" />
+        
+        <!-- Ignore vendor and test files -->
         <ignoreFiles>
             <directory name="vendor" />
             <directory name="tests" />
+            <directory name="docs" />
+            <directory name="scripts" />
+            <directory name=".github" />
+            <file name="phpunit.xml" />
+            <file name="composer.json" />
+            <file name="composer.lock" />
         </ignoreFiles>
     </projectFiles>
 
+    <!-- Issue handlers for specific error types -->
     <issueHandlers>
+        <!-- Suppress mixed assignment errors in tests -->
         <MixedAssignment>
             <errorLevel type="suppress">
                 <directory name="tests" />
             </errorLevel>
         </MixedAssignment>
+        
+        <!-- Suppress mixed property access in tests -->
+        <MixedPropertyAssignment>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </MixedPropertyAssignment>
+        
+        <!-- Suppress mixed array access in tests -->
+        <MixedArrayAccess>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </MixedArrayAccess>
+        
+        <!-- Suppress unused variables in examples -->
+        <UnusedVariable>
+            <errorLevel type="suppress">
+                <directory name="examples" />
+            </errorLevel>
+        </UnusedVariable>
+        
+        <!-- Suppress mixed assignment errors in examples -->
+        <MixedAssignment>
+            <errorLevel type="suppress">
+                <directory name="examples" />
+            </errorLevel>
+        </MixedAssignment>
+        
+        <!-- Suppress mixed array access in examples -->
+        <MixedArrayAccess>
+            <errorLevel type="suppress">
+                <directory name="examples" />
+            </errorLevel>
+        </MixedArrayAccess>
     </issueHandlers>
+
+    <!-- Universal object crates -->
+    <universalObjectCrates>
+        <class name="stdClass" />
+        <class name="SimpleXMLElement" />
+        <class name="DOMDocument" />
+        <class name="DOMElement" />
+        <class name="DOMNodeList" />
+        <class name="DOMNode" />
+    </universalObjectCrates>
 </psalm>
