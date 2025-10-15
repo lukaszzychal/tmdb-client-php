@@ -19,17 +19,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
 
-    - name: Cache Composer packages
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
@@ -44,115 +44,115 @@ jobs:
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-    - name: Generate changelog
-      id: changelog
-      run: |
-        # Extract version from tag (remove 'v' prefix)
-        VERSION=${GITHUB_REF#refs/tags/v}
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
-        
-        # Generate changelog for this version
-        echo "## TMDB Client PHP v$VERSION" > release_notes.md
-        echo "" >> release_notes.md
-        
-        # Get the previous tag using multiple methods
-        echo "=== Tag Detection Debug ==="
-        
-        # Method 1: git describe
-        PREV_TAG_DESC=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
-        echo "Method 1 (git describe): $PREV_TAG_DESC"
-        
-        # Method 2: git tag list
-        ALL_TAGS=$(git tag --sort=-version:refname)
-        echo "Method 2 (git tag): $ALL_TAGS"
-        
-        # Method 3: fetch all tags first
-        git fetch --tags
-        ALL_TAGS_FETCHED=$(git tag --sort=-version:refname)
-        echo "Method 3 (after fetch): $ALL_TAGS_FETCHED"
-        
-        CURRENT_TAG="v$VERSION"
-        echo "Current tag: $CURRENT_TAG"
-        
-        # Use the best available method
-        if [ -n "$PREV_TAG_DESC" ]; then
-          PREV_TAG="$PREV_TAG_DESC"
-          echo "Using git describe: $PREV_TAG"
-        elif [ -n "$ALL_TAGS_FETCHED" ]; then
-          PREV_TAG=$(echo "$ALL_TAGS_FETCHED" | grep -A1 "^$CURRENT_TAG$" | tail -1)
-          echo "Using fetched tags: $PREV_TAG"
-        else
-          PREV_TAG=""
-          echo "No previous tag found"
-        fi
-        
-        echo "Final previous tag: $PREV_TAG"
-        
-        if [ -n "$PREV_TAG" ]; then
-          echo "### What's Changed" >> release_notes.md
-          git log --pretty=format:"- %s" $PREV_TAG..HEAD >> release_notes.md
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Extract version from tag (remove 'v' prefix)
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Generate changelog for this version
+          echo "## TMDB Client PHP v$VERSION" > release_notes.md
           echo "" >> release_notes.md
-        fi
-        
-        # Migration Guide - check for breaking changes
-        BREAKING_CHANGES=$(git log --pretty=format:"%s" --grep="BREAKING CHANGE\|breaking" $PREV_TAG..HEAD)
-        if [ -n "$BREAKING_CHANGES" ]; then
-          echo "### 🚨 Migration Guide" >> release_notes.md
-          echo "**BREAKING CHANGES** - This release contains breaking changes." >> release_notes.md
+          
+          # Get the previous tag using multiple methods
+          echo "=== Tag Detection Debug ==="
+          
+          # Method 1: git describe
+          PREV_TAG_DESC=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          echo "Method 1 (git describe): $PREV_TAG_DESC"
+          
+          # Method 2: git tag list
+          ALL_TAGS=$(git tag --sort=-version:refname)
+          echo "Method 2 (git tag): $ALL_TAGS"
+          
+          # Method 3: fetch all tags first
+          git fetch --tags
+          ALL_TAGS_FETCHED=$(git tag --sort=-version:refname)
+          echo "Method 3 (after fetch): $ALL_TAGS_FETCHED"
+          
+          CURRENT_TAG="v$VERSION"
+          echo "Current tag: $CURRENT_TAG"
+          
+          # Use the best available method
+          if [ -n "$PREV_TAG_DESC" ]; then
+            PREV_TAG="$PREV_TAG_DESC"
+            echo "Using git describe: $PREV_TAG"
+          elif [ -n "$ALL_TAGS_FETCHED" ]; then
+            PREV_TAG=$(echo "$ALL_TAGS_FETCHED" | grep -A1 "^$CURRENT_TAG$" | tail -1)
+            echo "Using fetched tags: $PREV_TAG"
+          else
+            PREV_TAG=""
+            echo "No previous tag found"
+          fi
+          
+          echo "Final previous tag: $PREV_TAG"
+          
+          if [ -n "$PREV_TAG" ]; then
+            echo "### What's Changed" >> release_notes.md
+            git log --pretty=format:"- %s" $PREV_TAG..HEAD >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+          
+          # Migration Guide - check for breaking changes
+          BREAKING_CHANGES=$(git log --pretty=format:"%s" --grep="BREAKING CHANGE\|breaking" $PREV_TAG..HEAD)
+          if [ -n "$BREAKING_CHANGES" ]; then
+            echo "### 🚨 Migration Guide" >> release_notes.md
+            echo "**BREAKING CHANGES** - This release contains breaking changes." >> release_notes.md
+            echo "" >> release_notes.md
+            echo "**Breaking Changes:**" >> release_notes.md
+            echo "$BREAKING_CHANGES" >> release_notes.md
+            echo "" >> release_notes.md
+          else
+            echo "### 🚀 Migration Guide" >> release_notes.md
+            echo "**No breaking changes** - This release maintains full backward compatibility." >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+          
+          # Installation instructions
+          echo "### 📦 Installation" >> release_notes.md
           echo "" >> release_notes.md
-          echo "**Breaking Changes:**" >> release_notes.md
-          echo "$BREAKING_CHANGES" >> release_notes.md
+          echo '```bash' >> release_notes.md
+          echo "composer require lukaszzychal/tmdb-client-php:^$VERSION" >> release_notes.md
+          echo '```' >> release_notes.md
           echo "" >> release_notes.md
-        else
-          echo "### 🚀 Migration Guide" >> release_notes.md
-          echo "**No breaking changes** - This release maintains full backward compatibility." >> release_notes.md
+          
+          # Quick Start section
+          echo "### 🚀 Quick Start" >> release_notes.md
           echo "" >> release_notes.md
-        fi
-        
-        # Installation instructions
-        echo "### 📦 Installation" >> release_notes.md
-        echo "" >> release_notes.md
-        echo '```bash' >> release_notes.md
-        echo "composer require lukaszzychal/tmdb-client-php:^$VERSION" >> release_notes.md
-        echo '```' >> release_notes.md
-        echo "" >> release_notes.md
-        
-        # Quick Start section
-        echo "### 🚀 Quick Start" >> release_notes.md
-        echo "" >> release_notes.md
-        echo '```php' >> release_notes.md
-        echo '<?php' >> release_notes.md
-        echo 'require_once '\''vendor/autoload.php'\'';' >> release_notes.md
-        echo '' >> release_notes.md
-        echo 'use LukaszZychal\\TMDB\\Client\\TMDBClient;' >> release_notes.md
-        echo 'use LukaszZychal\\TMDB\\Utils\\EnvLoader;' >> release_notes.md
-        echo '' >> release_notes.md
-        echo '// Load environment variables' >> release_notes.md
-        echo 'EnvLoader::load();' >> release_notes.md
-        echo '' >> release_notes.md
-        echo '// Create client' >> release_notes.md
-        echo '$client = new TMDBClient($_ENV['\''TMDB_API_KEY'\'']);' >> release_notes.md
-        echo '' >> release_notes.md
-        echo '// Get popular movies' >> release_notes.md
-        echo '$movies = $client->movies()->getPopular();' >> release_notes.md
-        echo '```' >> release_notes.md
-        echo "" >> release_notes.md
-        
-        # Links section
-        echo "### 🔗 Links" >> release_notes.md
-        echo "" >> release_notes.md
-        echo "- [Documentation](https://github.com/lukaszzychal/tmdb-client-php#readme)" >> release_notes.md
-        echo "- [Packagist](https://packagist.org/packages/lukaszzychal/tmdb-client-php)" >> release_notes.md
-        echo "- [Issues](https://github.com/lukaszzychal/tmdb-client-php/issues)" >> release_notes.md
-        echo "- [Changelog](https://github.com/lukaszzychal/tmdb-client-php/blob/main/CHANGELOG.md)" >> release_notes.md
-        echo "" >> release_notes.md
-        
-        # Full changelog link
-        if [ -n "$PREV_TAG" ]; then
-          echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/compare/$PREV_TAG...v$VERSION" >> release_notes.md
-        else
-          echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/releases/tag/v$VERSION" >> release_notes.md
-        fi
+          echo '```php' >> release_notes.md
+          echo '<?php' >> release_notes.md
+          echo 'require_once '\''vendor/autoload.php'\'';' >> release_notes.md
+          echo '' >> release_notes.md
+          echo 'use LukaszZychal\\TMDB\\Client\\TMDBClient;' >> release_notes.md
+          echo 'use LukaszZychal\\TMDB\\Utils\\EnvLoader;' >> release_notes.md
+          echo '' >> release_notes.md
+          echo '// Load environment variables' >> release_notes.md
+          echo 'EnvLoader::load();' >> release_notes.md
+          echo '' >> release_notes.md
+          echo '// Create client' >> release_notes.md
+          echo '$client = new TMDBClient($_ENV['\''TMDB_API_KEY'\'']);' >> release_notes.md
+          echo '' >> release_notes.md
+          echo '// Get popular movies' >> release_notes.md
+          echo '$movies = $client->movies()->getPopular();' >> release_notes.md
+          echo '```' >> release_notes.md
+          echo "" >> release_notes.md
+          
+          # Links section
+          echo "### 🔗 Links" >> release_notes.md
+          echo "" >> release_notes.md
+          echo "- [Documentation](https://github.com/lukaszzychal/tmdb-client-php#readme)" >> release_notes.md
+          echo "- [Packagist](https://packagist.org/packages/lukaszzychal/tmdb-client-php)" >> release_notes.md
+          echo "- [Issues](https://github.com/lukaszzychal/tmdb-client-php/issues)" >> release_notes.md
+          echo "- [Changelog](https://github.com/lukaszzychal/tmdb-client-php/blob/main/CHANGELOG.md)" >> release_notes.md
+          echo "" >> release_notes.md
+          
+          # Full changelog link
+          if [ -n "$PREV_TAG" ]; then
+            echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/compare/$PREV_TAG...v$VERSION" >> release_notes.md
+          else
+            echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/releases/tag/v$VERSION" >> release_notes.md
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -188,13 +188,13 @@ jobs:
           echo "Please manually update Packagist or configure Packagist webhook for automatic updates."
           echo "Packagist URL: https://packagist.org/packages/lukaszzychal/tmdb-client-php"
 
-    - name: Notify release
-      if: success()
-      run: |
-        echo "🎉 Release ${{ github.ref_name }} created successfully!"
-        echo "📦 Package: lukaszzychal/tmdb-client-php"
-        echo "🏷️  Tag: ${{ github.ref_name }}"
-        echo "📋 Release notes: release-notes.md"
-        echo "🔗 Release URL: https://github.com/lukaszzychal/tmdb-client-php/releases/tag/${{ github.ref_name }}"
+      - name: Notify release
+        if: success()
+        run: |
+          echo "🎉 Release ${{ github.ref_name }} created successfully!"
+          echo "📦 Package: lukaszzychal/tmdb-client-php"
+          echo "🏷️  Tag: ${{ github.ref_name }}"
+          echo "📋 Release notes: release-notes.md"
+          echo "🔗 Release URL: https://github.com/lukaszzychal/tmdb-client-php/releases/tag/${{ github.ref_name }}"
 
 
