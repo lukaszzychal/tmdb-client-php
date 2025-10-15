@@ -24,8 +24,10 @@ $compliance = LicenseCompliance::checkCompliance([
 
 if ($compliance['is_compliant']) {
     echo "✅ Your implementation is compliant with TMDB terms.\n";
-} else {
+}
+else {
     echo "❌ Compliance issues found:\n";
+
     foreach ($compliance['issues'] as $issue) {
         echo "   - {$issue}\n";
     }
@@ -85,10 +87,10 @@ echo "5. Complete HTML Page Example:\n";
             margin-top: 0;
             color: #333;
         }
-        <?php echo LicenseCompliance::getAttributionStyles(); ?>
+        <?= LicenseCompliance::getAttributionStyles(); ?>
     </style>
     <script type="application/ld+json">
-        <?php echo LicenseCompliance::generateJsonLdAttribution(); ?>
+        <?= LicenseCompliance::generateJsonLdAttribution(); ?>
     </script>
 </head>
 <body>
@@ -111,14 +113,15 @@ echo "5. Complete HTML Page Example:\n";
             echo LicenseCompliance::generateHtmlAttribution();
             echo '</div>';
         }
-    } catch (Exception $e) {
-        echo '<p>Error: ' . htmlspecialchars($e->getMessage()) . '</p>';
     }
+catch (Exception $e) {
+    echo '<p>Error: ' . htmlspecialchars($e->getMessage()) . '</p>';
+}
 ?>
     
     <!-- MANDATORY: Page-level TMDB attribution -->
     <footer>
-        <?php echo LicenseCompliance::generateHtmlAttribution(); ?>
+        <?= LicenseCompliance::generateHtmlAttribution(); ?>
     </footer>
 </body>
 </html>
@@ -139,8 +142,10 @@ $validation = LicenseCompliance::validateHtmlAttribution($sampleHtml);
 
 if ($validation['is_valid']) {
     echo "✅ HTML content passes TMDB attribution validation.\n";
-} else {
+}
+else {
     echo "❌ HTML content has compliance issues:\n";
+
     foreach ($validation['errors'] as $error) {
         echo "   - {$error}\n";
     }
@@ -148,6 +153,7 @@ if ($validation['is_valid']) {
 
 if (!empty($validation['warnings'])) {
     echo "⚠️ Warnings:\n";
+
     foreach ($validation['warnings'] as $warning) {
         echo "   - {$warning}\n";
     }

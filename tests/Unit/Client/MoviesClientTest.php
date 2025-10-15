@@ -9,7 +9,6 @@ use LukaszZychal\TMDB\Client\MoviesClient;
 use LukaszZychal\TMDB\Http\HttpClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
 
 class MoviesClientTest extends TestCase
 {
@@ -27,7 +26,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['language' => 'en-US'];
         $expectedResponse = new Response(200, [], '{"id": 123, "title": "Test Movie"}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -35,7 +34,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getDetails($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -43,7 +42,7 @@ class MoviesClientTest extends TestCase
     {
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -51,7 +50,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getPopular($options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -59,7 +58,7 @@ class MoviesClientTest extends TestCase
     {
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -67,7 +66,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getNowPlaying($options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -75,7 +74,7 @@ class MoviesClientTest extends TestCase
     {
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -83,7 +82,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getUpcoming($options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -91,7 +90,7 @@ class MoviesClientTest extends TestCase
     {
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -99,7 +98,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getTopRated($options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -108,7 +107,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['language' => 'en-US'];
         $expectedResponse = new Response(200, [], '{"cast": [], "crew": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -116,7 +115,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getCredits($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -125,7 +124,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -133,7 +132,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getReviews($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -142,7 +141,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['language' => 'en-US'];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -150,7 +149,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getVideos($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -159,7 +158,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['language' => 'en-US'];
         $expectedResponse = new Response(200, [], '{"backdrops": [], "posters": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -167,7 +166,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getImages($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -176,7 +175,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -184,7 +183,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getSimilar($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -193,7 +192,7 @@ class MoviesClientTest extends TestCase
         $movieId = 123;
         $options = ['page' => 1];
         $expectedResponse = new Response(200, [], '{"results": []}');
-        
+
         $this->httpClient
             ->expects($this->once())
             ->method('get')
@@ -201,7 +200,7 @@ class MoviesClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->moviesClient->getRecommendations($movieId, $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 }

@@ -15,7 +15,8 @@ interface HttpClientInterface
      * Make a GET request.
      *
      * @param string $uri
-     * @param array $options
+     * @param array  $options
+     *
      * @return ResponseInterface
      */
     public function get(string $uri, array $options = []): ResponseInterface;
@@ -24,7 +25,8 @@ interface HttpClientInterface
      * Make a POST request.
      *
      * @param string $uri
-     * @param array $options
+     * @param array  $options
+     *
      * @return ResponseInterface
      */
     public function post(string $uri, array $options = []): ResponseInterface;
@@ -33,7 +35,8 @@ interface HttpClientInterface
      * Make a PUT request.
      *
      * @param string $uri
-     * @param array $options
+     * @param array  $options
+     *
      * @return ResponseInterface
      */
     public function put(string $uri, array $options = []): ResponseInterface;
@@ -42,7 +45,8 @@ interface HttpClientInterface
      * Make a DELETE request.
      *
      * @param string $uri
-     * @param array $options
+     * @param array  $options
+     *
      * @return ResponseInterface
      */
     public function delete(string $uri, array $options = []): ResponseInterface;
@@ -52,7 +56,8 @@ interface HttpClientInterface
      *
      * @param string $method
      * @param string $uri
-     * @param array $options
+     * @param array  $options
+     *
      * @return ResponseInterface
      */
     public function request(string $method, string $uri, array $options = []): ResponseInterface;

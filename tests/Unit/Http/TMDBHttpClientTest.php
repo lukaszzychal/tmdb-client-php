@@ -31,10 +31,10 @@ class TMDBHttpClientTest extends TestCase
         $this->apiKey = 'test-api-key';
         $this->guzzleClient = $this->createMock(GuzzleClient::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        
+
         // Create client with mocked Guzzle client
         $this->client = new TMDBHttpClient($this->apiKey, [], $this->logger);
-        
+
         // Use reflection to inject the mocked Guzzle client
         $reflection = new \ReflectionClass($this->client);
         $property = $reflection->getProperty('client');
@@ -52,7 +52,7 @@ class TMDBHttpClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->client->get('/test');
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -66,7 +66,7 @@ class TMDBHttpClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->client->post('/test');
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -80,7 +80,7 @@ class TMDBHttpClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->client->put('/test');
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -94,7 +94,7 @@ class TMDBHttpClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->client->delete('/test');
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -102,12 +102,12 @@ class TMDBHttpClientTest extends TestCase
     {
         $options = ['query' => ['page' => 2], 'headers' => ['Accept' => 'application/json']];
         $expectedResponse = new Response(200, [], '{"page": 2}');
-        
+
         $expectedOptions = [
             'query' => ['page' => 2, 'api_key' => $this->apiKey],
-            'headers' => ['Accept' => 'application/json']
+            'headers' => ['Accept' => 'application/json'],
         ];
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -115,7 +115,7 @@ class TMDBHttpClientTest extends TestCase
             ->willReturn($expectedResponse);
 
         $response = $this->client->request('GET', '/test', $options);
-        
+
         $this->assertSame($expectedResponse, $response);
     }
 
@@ -124,7 +124,7 @@ class TMDBHttpClientTest extends TestCase
         $request = new Request('GET', '/test');
         $response = new Response(401, [], '{"status_code": 7, "status_message": "Invalid API key"}');
         $exception = new ClientException('Unauthorized', $request, $response);
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -132,7 +132,7 @@ class TMDBHttpClientTest extends TestCase
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Invalid API key or authentication failed');
-        
+
         $this->client->get('/test');
     }
 
@@ -141,7 +141,7 @@ class TMDBHttpClientTest extends TestCase
         $request = new Request('GET', '/test');
         $response = new Response(404, [], '{"status_code": 34, "status_message": "The resource you requested could not be found."}');
         $exception = new ClientException('Not Found', $request, $response);
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -149,7 +149,7 @@ class TMDBHttpClientTest extends TestCase
 
         $this->expectException(NotFoundException::class);
         $this->expectExceptionMessage('Resource not found');
-        
+
         $this->client->get('/test');
     }
 
@@ -158,7 +158,7 @@ class TMDBHttpClientTest extends TestCase
         $request = new Request('GET', '/test');
         $response = new Response(429, [], '{"status_code": 25, "status_message": "Your request count (40) is over the allowed limit of 40."}');
         $exception = new ClientException('Too Many Requests', $request, $response);
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -166,7 +166,7 @@ class TMDBHttpClientTest extends TestCase
 
         $this->expectException(RateLimitException::class);
         $this->expectExceptionMessage('Rate limit exceeded');
-        
+
         $this->client->get('/test');
     }
 
@@ -175,7 +175,7 @@ class TMDBHttpClientTest extends TestCase
         $request = new Request('GET', '/test');
         $response = new Response(500, [], '{"status_code": 500, "status_message": "Internal Server Error"}');
         $exception = new ServerException('Internal Server Error', $request, $response);
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -183,7 +183,7 @@ class TMDBHttpClientTest extends TestCase
 
         $this->expectException(TMDBException::class);
         $this->expectExceptionMessage('Server error 500: {"status_code": 500, "status_message": "Internal Server Error"}');
-        
+
         $this->client->get('/test');
     }
 
@@ -191,7 +191,7 @@ class TMDBHttpClientTest extends TestCase
     {
         $request = new Request('GET', '/test');
         $exception = new TooManyRedirectsException('Too many redirects', $request);
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -199,14 +199,14 @@ class TMDBHttpClientTest extends TestCase
 
         $this->expectException(TMDBException::class);
         $this->expectExceptionMessage('Too many redirects');
-        
+
         $this->client->get('/test');
     }
 
     public function testGenericGuzzleException(): void
     {
         $exception = new \GuzzleHttp\Exception\ConnectException('Connection failed', new Request('GET', '/test'));
-        
+
         $this->guzzleClient
             ->expects($this->once())
             ->method('request')
@@ -214,7 +214,7 @@ class TMDBHttpClientTest extends TestCase
 
         $this->expectException(TMDBException::class);
         $this->expectExceptionMessage('HTTP request failed: Connection failed');
-        
+
         $this->client->get('/test');
     }
 
@@ -233,7 +233,7 @@ class TMDBHttpClientTest extends TestCase
     public function testLogging(): void
     {
         $expectedResponse = new Response(200, [], '{"success": true}');
-        
+
         $this->logger
             ->expects($this->exactly(2))
             ->method('info')
@@ -258,7 +258,7 @@ class TMDBHttpClientTest extends TestCase
         $request = new Request('GET', '/test');
         $response = new Response(401, [], '{"error": "Unauthorized"}');
         $exception = new ClientException('Unauthorized', $request, $response);
-        
+
         $this->logger
             ->expects($this->once())
             ->method('info')
@@ -266,7 +266,7 @@ class TMDBHttpClientTest extends TestCase
                 'Making TMDB API request',
                 $this->isType('array')
             );
-            
+
         $this->logger
             ->expects($this->once())
             ->method('error')
@@ -274,7 +274,7 @@ class TMDBHttpClientTest extends TestCase
                 'TMDB API client error',
                 [
                     'status_code' => 401,
-                    'response_body' => '{"error": "Unauthorized"}'
+                    'response_body' => '{"error": "Unauthorized"}',
                 ]
             );
 

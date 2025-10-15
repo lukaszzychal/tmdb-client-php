@@ -91,10 +91,12 @@ try {
     }
 
     echo "\n=== Example completed successfully! ===\n";
-} catch (TMDBException $e) {
+}
+catch (TMDBException $e) {
     echo 'TMDB Error: ' . $e->getMessage() . "\n";
     exit(1);
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     echo 'Unexpected error: ' . $e->getMessage() . "\n";
     exit(1);
 }

@@ -10,11 +10,11 @@ use LukaszZychal\TMDB\Exception\RateLimitException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Contract tests to verify real TMDB API behavior
- * 
+ * Contract tests to verify real TMDB API behavior.
+ *
  * These tests require a valid TMDB API key and will make real API calls.
  * Set TMDB_API_KEY environment variable to run these tests.
- * 
+ *
  * WARNING: These tests are rate-limited and should be run sparingly.
  */
 class TMDBContractTest extends TestCase
@@ -25,13 +25,13 @@ class TMDBContractTest extends TestCase
     protected function setUp(): void
     {
         $this->apiKey = getenv('TMDB_API_KEY');
-        
+
         if (!$this->apiKey) {
             $this->markTestSkipped('TMDB_API_KEY environment variable not set');
         }
 
         $this->client = new TMDBClient($this->apiKey);
-        
+
         // Add a small delay to respect rate limits
         usleep(250000); // 250ms delay
     }
@@ -69,7 +69,7 @@ class TMDBContractTest extends TestCase
         $this->assertArrayHasKey('total_pages', $data);
         $this->assertArrayHasKey('total_results', $data);
         $this->assertIsArray($data['results']);
-        
+
         if (!empty($data['results'])) {
             $movie = $data['results'][0];
             $this->assertArrayHasKey('id', $movie);
@@ -83,11 +83,11 @@ class TMDBContractTest extends TestCase
         // First get a popular TV show to get a valid ID
         $popularResponse = $this->client->tv()->getPopular();
         $popularData = json_decode($popularResponse->getBody()->getContents(), true);
-        
+
         $this->assertEquals(200, $popularResponse->getStatusCode());
         $this->assertArrayHasKey('results', $popularData);
         $this->assertNotEmpty($popularData['results']);
-        
+
         // Use the first TV show from popular results
         $tvId = $popularData['results'][0]['id'];
         $response = $this->client->tv()->getDetails($tvId);
@@ -110,7 +110,7 @@ class TMDBContractTest extends TestCase
         $this->assertArrayHasKey('total_pages', $data);
         $this->assertArrayHasKey('total_results', $data);
         $this->assertIsArray($data['results']);
-        
+
         if (!empty($data['results'])) {
             $tvShow = $data['results'][0];
             $this->assertArrayHasKey('id', $tvShow);
@@ -124,11 +124,11 @@ class TMDBContractTest extends TestCase
         // First get popular people to get a valid ID
         $popularResponse = $this->client->people()->getPopular();
         $popularData = json_decode($popularResponse->getBody()->getContents(), true);
-        
+
         $this->assertEquals(200, $popularResponse->getStatusCode());
         $this->assertArrayHasKey('results', $popularData);
         $this->assertNotEmpty($popularData['results']);
-        
+
         // Use the first person from popular results
         $personId = $popularData['results'][0]['id'];
         $response = $this->client->people()->getDetails($personId);
@@ -151,7 +151,7 @@ class TMDBContractTest extends TestCase
         $this->assertArrayHasKey('total_results', $data);
         $this->assertIsArray($data['results']);
         $this->assertGreaterThan(0, $data['total_results']);
-        
+
         if (!empty($data['results'])) {
             $movie = $data['results'][0];
             $this->assertArrayHasKey('id', $movie);
@@ -167,7 +167,7 @@ class TMDBContractTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('genres', $data);
         $this->assertIsArray($data['genres']);
-        
+
         if (!empty($data['genres'])) {
             $genre = $data['genres'][0];
             $this->assertArrayHasKey('id', $genre);
@@ -178,7 +178,7 @@ class TMDBContractTest extends TestCase
     public function testInvalidApiKey(): void
     {
         $invalidClient = new TMDBClient('invalid-api-key');
-        
+
         $this->expectException(AuthenticationException::class);
         $invalidClient->configuration()->getDetails();
     }
@@ -188,7 +188,7 @@ class TMDBContractTest extends TestCase
         // This test might fail if rate limits are hit
         // It's designed to test the rate limit exception handling
         $responses = [];
-        
+
         try {
             // Make multiple rapid requests to potentially trigger rate limiting
             for ($i = 0; $i < 5; $i++) {
@@ -196,11 +196,11 @@ class TMDBContractTest extends TestCase
                 $responses[] = $response->getStatusCode();
                 usleep(100000); // 100ms delay between requests
             }
-            
+
             $this->assertCount(5, $responses);
             $this->assertContainsOnly('integer', $responses);
-            
-        } catch (RateLimitException $e) {
+        }
+        catch (RateLimitException $e) {
             // Rate limit exception is expected behavior
             $this->assertStringContains('Rate limit', $e->getMessage());
         }
@@ -215,14 +215,14 @@ class TMDBContractTest extends TestCase
     }
 
     /**
-     * Test API response structure consistency
+     * Test API response structure consistency.
      */
     public function testApiResponseStructure(): void
     {
         $endpoints = [
-            'movies_popular' => fn() => $this->client->movies()->getPopular(),
-            'tv_popular' => fn() => $this->client->tv()->getPopular(),
-            'people_popular' => fn() => $this->client->people()->getPopular(),
+            'movies_popular' => fn () => $this->client->movies()->getPopular(),
+            'tv_popular' => fn () => $this->client->tv()->getPopular(),
+            'people_popular' => fn () => $this->client->people()->getPopular(),
         ];
 
         foreach ($endpoints as $name => $endpointCall) {

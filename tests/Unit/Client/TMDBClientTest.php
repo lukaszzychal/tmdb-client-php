@@ -23,7 +23,7 @@ class TMDBClientTest extends TestCase
     {
         $this->httpClient = $this->createMock(HttpClientInterface::class);
         $this->client = new TMDBClient('test-api-key');
-        
+
         // Use reflection to inject the mocked HTTP client
         $reflection = new \ReflectionClass($this->client);
         $property = $reflection->getProperty('httpClient');

@@ -95,15 +95,19 @@ class TMDBHttpClient implements HttpClientInterface
             ]);
 
             return $response;
-        } catch (ClientException $e) {
+        }
+        catch (ClientException $e) {
             $this->handleClientException($e);
-        } catch (ServerException $e) {
+        }
+        catch (ServerException $e) {
             $this->handleServerException($e);
-        } catch (TooManyRedirectsException $e) {
+        }
+        catch (TooManyRedirectsException $e) {
             $this->logger->error('Too many redirects', ['uri' => $uri]);
 
             throw new TMDBException('Too many redirects', 0, $e);
-        } catch (GuzzleException $e) {
+        }
+        catch (GuzzleException $e) {
             $this->logger->error('Guzzle exception', [
                 'message' => $e->getMessage(),
                 'uri' => $uri,
@@ -147,7 +151,7 @@ class TMDBHttpClient implements HttpClientInterface
                 throw new RateLimitException('Rate limit exceeded');
             default:
                 throw new TMDBException(
-                    sprintf('Client error %d: %s', $statusCode, $responseBody),
+                    \sprintf('Client error %d: %s', $statusCode, $responseBody),
                     $statusCode,
                     $e
                 );
@@ -166,7 +170,7 @@ class TMDBHttpClient implements HttpClientInterface
         ]);
 
         throw new TMDBException(
-            sprintf('Server error %d: %s', $statusCode, $responseBody),
+            \sprintf('Server error %d: %s', $statusCode, $responseBody),
             $statusCode,
             $e
         );

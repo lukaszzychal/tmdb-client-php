@@ -16,6 +16,7 @@ class EnvLoader
      * Load environment variables from .env file.
      *
      * @param string $filePath Path to the .env file
+     *
      * @return bool True if file was loaded successfully, false otherwise
      */
     public static function load(string $filePath): bool
@@ -34,26 +35,28 @@ class EnvLoader
             $line = trim($line);
 
             // Skip empty lines and comments
-            if (empty($line) || strpos($line, '#') === 0) {
+            if (empty($line) || str_starts_with($line, '#')) {
                 continue;
             }
 
             // Parse key=value pairs
-            if (strpos($line, '=') !== false) {
+            if (str_contains($line, '=')) {
                 $parts = explode('=', $line, 2);
-                if (count($parts) === 2) {
+
+                if (\count($parts) === 2) {
                     $name = trim($parts[0]);
                     $value = trim($parts[1]);
 
                     // Remove quotes if present
                     if (($value[0] ?? '') === '"' && ($value[-1] ?? '') === '"') {
                         $value = substr($value, 1, -1);
-                    } elseif (($value[0] ?? '') === "'" && ($value[-1] ?? '') === "'") {
+                    }
+                    elseif (($value[0] ?? '') === "'" && ($value[-1] ?? '') === "'") {
                         $value = substr($value, 1, -1);
                     }
 
                     // Set environment variable if not already set
-                    if (!array_key_exists($name, $_ENV) && getenv($name) === false) {
+                    if (!\array_key_exists($name, $_ENV) && getenv($name) === false) {
                         $_ENV[$name] = $value;
                         putenv("$name=$value");
                     }
@@ -67,8 +70,9 @@ class EnvLoader
     /**
      * Get environment variable with fallback.
      *
-     * @param string $key Environment variable key
-     * @param mixed $default Default value if key is not found
+     * @param string $key     Environment variable key
+     * @param mixed  $default Default value if key is not found
+     *
      * @return mixed Environment variable value or default
      */
     public static function get(string $key, $default = null)
@@ -80,10 +84,11 @@ class EnvLoader
      * Check if environment variable exists.
      *
      * @param string $key Environment variable key
+     *
      * @return bool True if variable exists, false otherwise
      */
     public static function has(string $key): bool
     {
-        return array_key_exists($key, $_ENV) || getenv($key) !== false;
+        return \array_key_exists($key, $_ENV) || getenv($key) !== false;
     }
 }
