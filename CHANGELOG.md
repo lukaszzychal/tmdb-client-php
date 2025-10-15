@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Future features and improvements
+
+## [1.0.1] - 2025-10-15
+
+### Added
 - **TMDB License Compliance Utilities** (`LukaszZychal\TMDB\Utils\LicenseCompliance`)
   - Automatic attribution text generation
   - HTML attribution markup generation
@@ -34,6 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **README.md** updated with TMDB license compliance information
 - **Quick Start** examples now include mandatory attribution
 - Added compliance helper examples in documentation
+
+### Fixed
+- Fix EnvLoader usage in license compliance example
+- Fix JSON decoding for API responses in examples
+- All examples now work correctly with real TMDB API
 
 ## [1.0.0] - 2025-10-15
 
