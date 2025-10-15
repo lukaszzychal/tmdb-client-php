@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="6.13.1@1e3b7f0a8ab32b23197b91107adc0a7ed8a05b51">
+  <file src="src/Client/ConfigurationClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[ConfigurationClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getCountries]]></code>
+      <code><![CDATA[getJobs]]></code>
+      <code><![CDATA[getLanguages]]></code>
+      <code><![CDATA[getPrimaryTranslations]]></code>
+      <code><![CDATA[getTimezones]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Client/GenresClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[GenresClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getTVList]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Client/MoviesClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[MoviesClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getCredits]]></code>
+      <code><![CDATA[getImages]]></code>
+      <code><![CDATA[getNowPlaying]]></code>
+      <code><![CDATA[getRecommendations]]></code>
+      <code><![CDATA[getReviews]]></code>
+      <code><![CDATA[getSimilar]]></code>
+      <code><![CDATA[getTopRated]]></code>
+      <code><![CDATA[getUpcoming]]></code>
+      <code><![CDATA[getVideos]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Client/PeopleClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[PeopleClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getCombinedCredits]]></code>
+      <code><![CDATA[getDetails]]></code>
+      <code><![CDATA[getExternalIds]]></code>
+      <code><![CDATA[getImages]]></code>
+      <code><![CDATA[getMovieCredits]]></code>
+      <code><![CDATA[getPopular]]></code>
+      <code><![CDATA[getTVCredits]]></code>
+      <code><![CDATA[getTaggedImages]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Client/SearchClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[SearchClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[collections]]></code>
+      <code><![CDATA[companies]]></code>
+      <code><![CDATA[keywords]]></code>
+      <code><![CDATA[multi]]></code>
+      <code><![CDATA[people]]></code>
+      <code><![CDATA[tv]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Client/TMDBClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[TMDBClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getHttpClient]]></code>
+      <code><![CDATA[people]]></code>
+      <code><![CDATA[tv]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Client/TVClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[TVClient]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getAiringToday]]></code>
+      <code><![CDATA[getCredits]]></code>
+      <code><![CDATA[getDetails]]></code>
+      <code><![CDATA[getEpisodeDetails]]></code>
+      <code><![CDATA[getImages]]></code>
+      <code><![CDATA[getOnTheAir]]></code>
+      <code><![CDATA[getPopular]]></code>
+      <code><![CDATA[getRecommendations]]></code>
+      <code><![CDATA[getReviews]]></code>
+      <code><![CDATA[getSeasonDetails]]></code>
+      <code><![CDATA[getSimilar]]></code>
+      <code><![CDATA[getTopRated]]></code>
+      <code><![CDATA[getVideos]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Exception/AuthenticationException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[AuthenticationException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Exception/NotFoundException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[NotFoundException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Exception/RateLimitException.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[RateLimitException]]></code>
+    </ClassMustBeFinal>
+  </file>
+  <file src="src/Http/HttpClientInterface.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[delete]]></code>
+      <code><![CDATA[post]]></code>
+      <code><![CDATA[put]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Http/TMDBHttpClient.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[TMDBHttpClient]]></code>
+    </ClassMustBeFinal>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function delete(string $uri, array $options = []): ResponseInterface]]></code>
+      <code><![CDATA[public function get(string $uri, array $options = []): ResponseInterface]]></code>
+      <code><![CDATA[public function post(string $uri, array $options = []): ResponseInterface]]></code>
+      <code><![CDATA[public function put(string $uri, array $options = []): ResponseInterface]]></code>
+      <code><![CDATA[public function request(string $method, string $uri, array $options = []): ResponseInterface]]></code>
+    </MissingOverrideAttribute>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[getApiKey]]></code>
+      <code><![CDATA[setApiKey]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Utils/EnvLoader.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[EnvLoader]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[has]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedReturnValue>
+      <code><![CDATA[bool]]></code>
+    </PossiblyUnusedReturnValue>
+  </file>
+  <file src="src/Utils/LicenseCompliance.php">
+    <ClassMustBeFinal>
+      <code><![CDATA[LicenseCompliance]]></code>
+    </ClassMustBeFinal>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[generateTextAttribution]]></code>
+      <code><![CDATA[getPrimaryLogoUrl]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+</files>

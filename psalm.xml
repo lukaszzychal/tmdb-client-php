@@ -17,6 +17,7 @@ This configuration provides comprehensive static analysis with:
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    errorBaseline="psalm-baseline.xml"
 >
     <!-- Project files to analyze -->
     <projectFiles>
@@ -45,12 +46,6 @@ This configuration provides comprehensive static analysis with:
             </errorLevel>
         </MixedAssignment>
         
-        <!-- Suppress mixed property access in tests -->
-        <MixedPropertyAssignment>
-            <errorLevel type="suppress">
-                <directory name="tests" />
-            </errorLevel>
-        </MixedPropertyAssignment>
         
         <!-- Suppress mixed array access in tests -->
         <MixedArrayAccess>
@@ -59,12 +54,6 @@ This configuration provides comprehensive static analysis with:
             </errorLevel>
         </MixedArrayAccess>
         
-        <!-- Suppress unused variables in examples -->
-        <UnusedVariable>
-            <errorLevel type="suppress">
-                <directory name="examples" />
-            </errorLevel>
-        </UnusedVariable>
         
         <!-- Suppress mixed assignment errors in examples -->
         <MixedAssignment>
