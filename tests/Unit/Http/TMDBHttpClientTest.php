@@ -22,8 +22,11 @@ use Psr\Log\LoggerInterface;
 class TMDBHttpClientTest extends TestCase
 {
     private TMDBHttpClient $client;
+
     private MockObject $guzzleClient;
+
     private MockObject $logger;
+
     private string $apiKey;
 
     protected function setUp(): void

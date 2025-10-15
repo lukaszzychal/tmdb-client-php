@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 class TMDBClientTest extends TestCase
 {
     private TMDBClient $client;
+
     private HttpClientInterface $httpClient;
 
     protected function setUp(): void

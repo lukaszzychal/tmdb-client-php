@@ -70,6 +70,19 @@
             "@phpstan",
             "@psalm"
         ],
+        "quality-fast": [
+            "@php-cs-fixer",
+            "@test-core"
+        ],
+        "quality-with-psalm": [
+            "@php-cs-fixer",
+            "@phpstan",
+            "@psalm",
+            "@test-core"
+        ],
+        "psalm-baseline": "psalm --set-baseline=psalm-baseline.xml",
+        "cs-check": "php-cs-fixer fix --dry-run --verbose --allow-risky=yes",
+        "cs-fix": "php-cs-fixer fix --allow-risky=yes",
         "test-core": "vendor/bin/phpunit --testsuite=Unit,Integration"
     },
     "config": {

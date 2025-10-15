@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 class TMDBContractTest extends TestCase
 {
     private ?TMDBClient $client = null;
+
     private ?string $apiKey = null;
 
     protected function setUp(): void
@@ -199,8 +200,7 @@ class TMDBContractTest extends TestCase
 
             $this->assertCount(5, $responses);
             $this->assertContainsOnly('integer', $responses);
-        }
-        catch (RateLimitException $e) {
+        } catch (RateLimitException $e) {
             // Rate limit exception is expected behavior
             $this->assertStringContains('Rate limit', $e->getMessage());
         }

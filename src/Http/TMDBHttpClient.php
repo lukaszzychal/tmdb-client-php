@@ -29,7 +29,9 @@ class TMDBHttpClient implements HttpClientInterface
     private const DEFAULT_CONNECT_TIMEOUT = 10;
 
     private GuzzleClient $client;
+
     private string $apiKey;
+
     private LoggerInterface $logger;
 
     public function __construct(
@@ -95,19 +97,15 @@ class TMDBHttpClient implements HttpClientInterface
             ]);
 
             return $response;
-        }
-        catch (ClientException $e) {
+        } catch (ClientException $e) {
             $this->handleClientException($e);
-        }
-        catch (ServerException $e) {
+        } catch (ServerException $e) {
             $this->handleServerException($e);
-        }
-        catch (TooManyRedirectsException $e) {
+        } catch (TooManyRedirectsException $e) {
             $this->logger->error('Too many redirects', ['uri' => $uri]);
 
             throw new TMDBException('Too many redirects', 0, $e);
-        }
-        catch (GuzzleException $e) {
+        } catch (GuzzleException $e) {
             $this->logger->error('Guzzle exception', [
                 'message' => $e->getMessage(),
                 'uri' => $uri,

@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 class MoviesClientTest extends TestCase
 {
     private MoviesClient $moviesClient;
+
     private MockObject $httpClient;
 
     protected function setUp(): void
