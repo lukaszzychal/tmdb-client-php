@@ -12,6 +12,17 @@ A comprehensive PHP client for The Movie Database (TMDB) API built with modern P
 
 **Author:** [Łukasz Zychal](https://github.com/lukaszzychal)
 
+## ⚖️ TMDB License Compliance
+
+This client is designed to help you comply with [TMDB API Terms of Service](https://www.themoviedb.org/documentation/api/terms-of-use). When using this client, you must:
+
+- ✅ **Include TMDB Attribution** - Display "This product uses the TMDB API but is not endorsed or certified by TMDB"
+- ✅ **Use Official TMDB Logo** - Include the TMDB logo when displaying data
+- ✅ **Respect Rate Limits** - This client includes built-in rate limiting
+- ✅ **Handle Errors Properly** - Use the provided exception handling
+
+See [TMDB_LICENSE_COMPLIANCE.md](TMDB_LICENSE_COMPLIANCE.md) for detailed requirements and examples.
+
 ## Features
 
 - 🎬 **Complete TMDB API Coverage** - Movies, TV Shows, People, Search, Configuration, Genres
@@ -65,6 +76,7 @@ export TMDB_API_KEY="your-actual-api-key"
 <?php
 
 use LukaszZychal\TMDB\Client\TMDBClient;
+use LukaszZychal\TMDB\Utils\LicenseCompliance;
 
 // Load API key from .env file or environment variable
 $apiKey = $_ENV['TMDB_API_KEY'] ?? getenv('TMDB_API_KEY');
@@ -76,6 +88,15 @@ $client = new TMDBClient($apiKey);
 $popularMovies = $client->movies()->getPopular();
 $movies = json_decode($popularMovies->getBody()->getContents(), true);
 
+// Display movies with TMDB attribution (REQUIRED for compliance)
+foreach ($movies['results'] as $movie) {
+    echo "<h3>{$movie['title']}</h3>";
+    echo "<p>{$movie['overview']}</p>";
+    
+    // MANDATORY: Include TMDB attribution
+    echo LicenseCompliance::generateHtmlAttribution();
+}
+
 // Get movie details
 $movieDetails = $client->movies()->getDetails(550); // Fight Club
 $movie = json_decode($movieDetails->getBody()->getContents(), true);
@@ -83,6 +104,30 @@ $movie = json_decode($movieDetails->getBody()->getContents(), true);
 // Search for movies
 $searchResults = $client->search()->movies('Inception');
 $results = json_decode($searchResults->getBody()->getContents(), true);
+```
+
+### 📋 License Compliance Helper
+
+```php
+<?php
+use LukaszZychal\TMDB\Utils\LicenseCompliance;
+
+// Generate attribution HTML
+$attribution = LicenseCompliance::generateHtmlAttribution();
+
+// Validate your HTML content
+$validation = LicenseCompliance::validateHtmlAttribution($yourHtmlContent);
+
+// Check compliance status
+$compliance = LicenseCompliance::checkCompliance([
+    'requests_per_day' => 500,
+    'has_attribution' => true,
+    'has_logo' => true
+]);
+
+if (!$compliance['is_compliant']) {
+    echo "Issues: " . implode(', ', $compliance['issues']);
+}
 ```
 
 ## API Documentation
@@ -360,6 +405,24 @@ This project includes automated maintenance features to ensure reliability and s
 - **Multi-PHP version support** (8.1, 8.2, 8.3, 8.4)
 - **Security scanning** with Trivy vulnerability detection
 - **Code quality checks** with PHP CS Fixer, PHPStan, and Psalm
+
+## Examples
+
+### Basic Usage
+See `examples/basic-usage.php` for a complete working example.
+
+### License Compliance
+See `examples/license-compliance-example.php` for detailed TMDB license compliance examples including:
+- HTML attribution generation
+- CSS styling
+- JSON-LD structured data
+- Validation and compliance checking
+
+Run examples:
+```bash
+php examples/basic-usage.php
+php examples/license-compliance-example.php
+```
 
 ## Requirements
 
