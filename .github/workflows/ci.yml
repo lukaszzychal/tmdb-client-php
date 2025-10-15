@@ -48,6 +48,13 @@ jobs:
         php --version
         php -m
 
+    - name: Create cache directories
+      run: |
+        mkdir -p .phpstan/cache
+        mkdir -p .psalm
+        mkdir -p .phpunit.cache
+        mkdir -p build/coverage
+
     - name: Run PHP CS Fixer
       run: vendor/bin/php-cs-fixer fix --dry-run --diff --allow-risky=yes
 
@@ -55,7 +62,7 @@ jobs:
       run: vendor/bin/phpstan analyse
 
     - name: Run Psalm
-      run: vendor/bin/psalm
+      run: vendor/bin/psalm --no-cache
 
     - name: Run PHPUnit (Unit & Integration Tests)
       run: vendor/bin/phpunit --testsuite=Unit,Integration
