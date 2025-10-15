@@ -154,11 +154,28 @@ jobs:
           echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/releases/tag/v$VERSION" >> release_notes.md
         fi
 
+    - name: Debug Release Info
+      run: |
+        echo "=== Debug Information ==="
+        echo "GITHUB_REF: $GITHUB_REF"
+        echo "GITHUB_REF_NAME: ${{ github.ref_name }}"
+        echo "GITHUB_REF_TYPE: ${{ github.ref_type }}"
+        echo "RELEASE_NOTES_FILE:"
+        if [ -f "release_notes.md" ]; then
+          echo "✅ release_notes.md exists"
+          echo "File size: $(wc -c < release_notes.md) bytes"
+          echo "First 10 lines:"
+          head -10 release_notes.md
+        else
+          echo "❌ release_notes.md not found"
+        fi
+        echo "========================="
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{ steps.changelog.outputs.version }}
-        name: TMDB Client PHP v${{ steps.changelog.outputs.version }}
+        tag_name: ${{ github.ref_name }}
+        name: TMDB Client PHP ${{ github.ref_name }}
         body_path: release_notes.md
         draft: false
         prerelease: false
