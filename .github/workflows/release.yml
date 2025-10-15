@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v1.2.3, etc.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.ref_type == 'tag'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for proper tagging
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+
+    - name: Cache Composer packages
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+
+    - name: Validate composer.json
+      run: composer validate
+
+    - name: Run quality checks
+      run: |
+        echo "Running quality checks before release..."
+        composer quality-core
+
+    - name: Run tests
+      run: |
+        echo "Running tests before release..."
+        composer test-core
+
+    - name: Generate changelog
+      run: |
+        # Extract version from tag (remove 'v' prefix)
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "Creating release for version: $VERSION"
+        
+        # Create release notes
+        cat > release-notes.md << EOF
+        ## TMDB Client PHP v$VERSION
+        
+        ### Changes in this release:
+        
+        Please check the [CHANGELOG.md](https://github.com/lukaszzychal/tmdb-client-php/blob/main/CHANGELOG.md) for detailed changes.
+        
+        ### Installation:
+        
+        \`\`\`bash
+        composer require lukaszzychal/tmdb-client-php:^$VERSION
+        \`\`\`
+        
+        ### Quick Start:
+        
+        \`\`\`php
+        <?php
+        use LukaszZychal\\TMDB\\Client\\TMDBClient;
+        
+        \$client = new TMDBClient('your-api-key');
+        \$movies = \$client->movies()->getPopular();
+        \`\`\`
+        
+        ### Links:
+        - [Documentation](https://github.com/lukaszzychal/tmdb-client-php#readme)
+        - [Packagist](https://packagist.org/packages/lukaszzychal/tmdb-client-php)
+        - [Issues](https://github.com/lukaszzychal/tmdb-client-php/issues)
+        EOF
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: TMDB Client PHP ${{ github.ref_name }}
+        body_path: release-notes.md
+        draft: false
+        prerelease: ${{ contains(github.ref_name, 'alpha') || contains(github.ref_name, 'beta') || contains(github.ref_name, 'rc') }}
+
+    - name: Update Packagist
+      if: success()
+      run: |
+        echo "Release created successfully!"
+        echo "Please manually update Packagist or configure Packagist webhook for automatic updates."
+        echo "Packagist URL: https://packagist.org/packages/lukaszzychal/tmdb-client-php"
+
+    - name: Notify release
+      if: success()
+      run: |
+        echo "🎉 Release ${{ github.ref_name }} created successfully!"
+        echo "📦 Package: lukaszzychal/tmdb-client-php"
+        echo "🏷️  Tag: ${{ github.ref_name }}"
+        echo "📋 Release notes: release-notes.md"
+        echo "🔗 Release URL: https://github.com/lukaszzychal/tmdb-client-php/releases/tag/${{ github.ref_name }}"
+
+

@@ -1,0 +1,88 @@
+name: Contract Tests
+
+on:
+  schedule:
+    # Run on the 1st day of every month at 2:00 AM UTC
+    - cron: '0 2 1 * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  monthly-contract-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-8.3-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+
+      - name: Validate API Key
+        run: |
+          if [ -z "$TMDB_API_KEY" ]; then
+            echo "❌ TMDB_API_KEY is not set"
+            exit 1
+          fi
+          
+          if [ "$TMDB_API_KEY" = "your-tmdb-api-key-here" ]; then
+            echo "❌ TMDB_API_KEY is still using placeholder value"
+            exit 1
+          fi
+          
+          echo "✅ API key is configured (length: ${#TMDB_API_KEY} characters)"
+          echo "API key starts with: ${TMDB_API_KEY:0:8}..."
+
+      - name: Run Contract Tests
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: |
+          echo "🧪 Running monthly contract tests against real TMDB API..."
+          echo "📅 Test date: $(date)"
+          echo "🔗 API Base URL: https://api.themoviedb.org/3/"
+          
+          # Run contract tests with detailed output
+          vendor/bin/phpunit tests/Contract/ --testdox --colors=always
+          
+          echo "✅ Monthly contract tests completed successfully!"
+
+      - name: Create Test Report
+        if: always()
+        run: |
+          echo "📊 Monthly Contract Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "================================" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "**PHP Version:** $(php -v | head -n 1)" >> $GITHUB_STEP_SUMMARY
+          echo "**API Base URL:** https://api.themoviedb.org/3/" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ **Status:** All contract tests passed" >> $GITHUB_STEP_SUMMARY
+            echo "🎉 TMDB API integration is working correctly" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Status:** Contract tests failed" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ Please check the logs for details" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "🚨 Monthly contract tests failed!"
+          echo "Please check the TMDB API status and our implementation."
+          echo "Test logs are available in the GitHub Actions run."

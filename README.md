@@ -1,6 +1,8 @@
 # TMDB Client PHP
 
 [![CI/CD Pipeline](https://github.com/lukaszzychal/tmdb-client-php/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/lukaszzychal/tmdb-client-php/actions)
+[![Monthly Contract Tests](https://github.com/lukaszzychal/tmdb-client-php/workflows/Monthly%20Contract%20Tests/badge.svg)](https://github.com/lukaszzychal/tmdb-client-php/actions)
+[![Dependabot](https://api.dependabot.com/badges/status?dependency-manager=composer&repository-id=123456789)](https://github.com/lukaszzychal/tmdb-client-php/network/updates)
 [![Latest Stable Version](https://poser.pugx.org/lukaszzychal/tmdb-client-php/v/stable)](https://packagist.org/packages/lukaszzychal/tmdb-client-php)
 [![Total Downloads](https://poser.pugx.org/lukaszzychal/tmdb-client-php/downloads)](https://packagist.org/packages/lukaszzychal/tmdb-client-php)
 [![License](https://poser.pugx.org/lukaszzychal/tmdb-client-php/license)](https://packagist.org/packages/lukaszzychal/tmdb-client-php)
@@ -334,6 +336,30 @@ composer test-core
 - **PHPUnit**: Unit, Integration, and Contract testing
 
 For detailed information about all quality commands, see [Quality Commands Reference](docs/quality-commands.md).
+
+## Automated Maintenance
+
+This project includes automated maintenance features to ensure reliability and security:
+
+### 🔄 Dependabot Integration
+- **Monthly dependency updates** for Composer packages and GitHub Actions
+- Automatic pull requests for minor and patch updates
+- Grouped updates to reduce noise
+- Manual review required for major version updates
+
+### 🧪 Monthly Contract Testing
+- **Automated monthly tests** against the real TMDB API
+- Runs on the 1st day of every month at 2:00 AM UTC
+- Validates API compatibility and integration health
+- Detailed test reports with failure notifications
+- Can be triggered manually via GitHub Actions
+
+### 📊 CI/CD Pipeline
+- **Daily lightweight contract tests** for quick API health checks
+- **Comprehensive testing** on every push and pull request
+- **Multi-PHP version support** (8.1, 8.2, 8.3, 8.4)
+- **Security scanning** with Trivy vulnerability detection
+- **Code quality checks** with PHP CS Fixer, PHPStan, and Psalm
 
 ## Requirements
 

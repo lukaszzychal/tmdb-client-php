@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main, develop ]
   schedule:
-    # Run contract tests daily at 2 AM UTC
+    # Run contract tests daily at 2 AM UTC (lightweight check)
     - cron: '0 2 * * *'
 
 jobs:
