@@ -3,18 +3,21 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v1.2.3, etc.
+      - 'v*'
 
 jobs:
   release:
+    name: Create Release
     runs-on: ubuntu-latest
-    if: github.ref_type == 'tag'
-    
+    permissions:
+      contents: write
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0  # Fetch all history for proper tagging
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -28,21 +31,18 @@ jobs:
         path: vendor
         key: ${{ runner.os }}-php-8.3-composer-${{ hashFiles('**/composer.lock') }}
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
 
-    - name: Validate composer.json
-      run: composer validate
+      - name: Run tests
+        run: composer test-core
 
-    - name: Run quality checks
-      run: |
-        echo "Running quality checks before release..."
-        composer quality-core
+      - name: Run quality checks
+        run: composer quality-core
 
-    - name: Run tests
-      run: |
-        echo "Running tests before release..."
-        composer test-core
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
     - name: Generate changelog
       id: changelog
@@ -154,62 +154,39 @@ jobs:
           echo "**Full Changelog**: https://github.com/$GITHUB_REPOSITORY/releases/tag/v$VERSION" >> release_notes.md
         fi
 
-    - name: Create Release
-      run: |
-        echo "Creating release for tag: ${{ github.ref_name }}"
-        
-        # Create release using GitHub CLI (available in GitHub Actions)
-        gh release create "${{ github.ref_name }}" \
-          --title "TMDB Client PHP ${{ github.ref_name }}" \
-          --notes "## 🎉 TMDB Client PHP ${{ github.ref_name }}
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          name: TMDB Client PHP ${{ steps.version.outputs.VERSION }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-### Release Notes
+      - name: Update composer.json version
+        run: |
+          VERSION=${{ steps.version.outputs.VERSION }}
+          VERSION=${VERSION#v}
+          composer config version $VERSION
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add composer.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update version to $VERSION"
+            git push origin main
+          fi
 
-This is an automated release of the TMDB Client PHP library.
-
-### 📦 Installation
-
-\`\`\`bash
-composer require lukaszzychal/tmdb-client-php:${{ github.ref_name }}
-\`\`\`
-
-### 🚀 Quick Start
-
-\`\`\`php
-<?php
-require_once 'vendor/autoload.php';
-
-use LukaszZychal\\TMDB\\Client\\TMDBClient;
-use LukaszZychal\\TMDB\\Utils\\EnvLoader;
-
-// Load environment variables
-EnvLoader::load();
-
-// Create client
-\$client = new TMDBClient(\$_ENV['TMDB_API_KEY']);
-
-// Get popular movies
-\$movies = \$client->movies()->getPopular();
-\`\`\`
-
-### 🔗 Links
-
-- [Documentation](https://github.com/lukaszzychal/tmdb-client-php#readme)
-- [Packagist](https://packagist.org/packages/lukaszzychal/tmdb-client-php)
-- [Issues](https://github.com/lukaszzychal/tmdb-client-php/issues)
-- [Changelog](https://github.com/lukaszzychal/tmdb-client-php/blob/main/CHANGELOG.md)
-
-**Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.ref_name }}...${{ github.ref_name }}" \
-          --latest
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Update Packagist
-      if: success()
-      run: |
-        echo "Release created successfully!"
-        echo "Please manually update Packagist or configure Packagist webhook for automatic updates."
-        echo "Packagist URL: https://packagist.org/packages/lukaszzychal/tmdb-client-php"
+      - name: Update Packagist
+        if: success()
+        run: |
+          echo "Release created successfully!"
+          echo "Please manually update Packagist or configure Packagist webhook for automatic updates."
+          echo "Packagist URL: https://packagist.org/packages/lukaszzychal/tmdb-client-php"
 
     - name: Notify release
       if: success()
