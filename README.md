@@ -439,6 +439,11 @@ php examples/license-compliance-example.php
 5. Ensure all tests pass
 6. Submit a pull request
 
+## Support
+
+- [GitHub Issues](https://github.com/lukaszzychal/tmdb-client-php/issues) – Report bugs, request features, or track ongoing work.
+- [GitHub Discussions](https://github.com/lukaszzychal/tmdb-client-php/discussions) – Ask questions, share ideas, or get help from the community.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

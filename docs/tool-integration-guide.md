@@ -344,6 +344,11 @@ composer psalm      # Check advanced issues
    composer test-core
    ```
 
+## Community Support
+
+- [GitHub Issues](https://github.com/lukaszzychal/tmdb-client-php/issues) – Report bugs uncovered during tool integration or request enhancements.
+- [GitHub Discussions](https://github.com/lukaszzychal/tmdb-client-php/discussions) – Share workflows, ask integration questions, or collaborate with the community.
+
 ## Best Practices
 
 1. **Run tools in order:** CS Fixer → PHPStan → Psalm
