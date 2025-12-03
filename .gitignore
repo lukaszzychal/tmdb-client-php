@@ -30,7 +30,9 @@ logs/
 # Temporary files
 tmp/
 temp/
+temp-quality-config/
 *.tmp
+quality-tools-config.zip
 
 # Cache
 cache/
